@@ -13,28 +13,28 @@ import (
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if strings.Contains(ctx.FullPath(), "docs") {
+		if strings.Contains(ctx.FullPath(), "docs") || strings.Contains(ctx.FullPath(), "login") || strings.Contains(ctx.FullPath(), "register") {
 			ctx.Next()
 			return
 		}
 
 		authToken := ctx.Request.Header.Get("Authorization")
 		if authToken == "" {
-			handler.ErrorResponse(ctx, http.StatusBadRequest, util.ErrNoAuthorization)
+			handler.ErrorResponse(ctx, http.StatusUnauthorized, util.ErrUnauthorized)
 			ctx.Abort()
 			return
 		}
 
 		authToken = strings.Replace(authToken, "Bearer ", "", 1)
 
-		user_id, err := jwt.ValidateToken(authToken)
-		if err != nil || user_id == "" {
-			handler.ErrorResponse(ctx, http.StatusBadRequest, util.ErrTokenInvalid)
+		email, err := jwt.ValidateToken(authToken)
+		if err != nil || email == "" {
+			handler.ErrorResponse(ctx, http.StatusUnauthorized, util.ErrUnauthorized)
 			ctx.Abort()
 			return
 		}
 
-		ctx.Set(domain.EMAIL, user_id)
+		ctx.Set(domain.EMAIL, email)
 
 		ctx.Next()
 	}

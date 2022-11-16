@@ -61,6 +61,22 @@ func (_m *UserRepository) GetUserById(id string) *domain.Response {
 	return r0
 }
 
+// UpdateUserData provides a mock function with given fields: email, data
+func (_m *UserRepository) UpdateUserData(email string, data map[string]interface{}) *domain.Response {
+	ret := _m.Called(email, data)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(string, map[string]interface{}) *domain.Response); ok {
+		r0 = rf(email, data)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 type mockConstructorTestingTNewUserRepository interface {
 	mock.TestingT
 	Cleanup(func())

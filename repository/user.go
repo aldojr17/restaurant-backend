@@ -6,13 +6,17 @@ import (
 	"net/http"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type (
 	UserRepository interface {
 		GetUserById(id string) *domain.Response
-		CreateUser(user *domain.User) *domain.Response
 		GetUserByEmail(email string) *domain.Response
+
+		CreateUser(user *domain.User) *domain.Response
+
+		UpdateUserData(email string, data map[string]interface{}) *domain.Response
 	}
 
 	userRepository struct {
@@ -52,4 +56,14 @@ func (repo *userRepository) CreateUser(user *domain.User) *domain.Response {
 	}
 
 	return util.SetResponse(domain.ResponseUserCreated, 0, nil)
+}
+
+func (repo *userRepository) UpdateUserData(email string, data map[string]interface{}) *domain.Response {
+	user := new(domain.UserResponse)
+
+	if err := repo.db.Table("users").Model(&user).Clauses(clause.Returning{}).Where("email", email).Updates(data).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(user, 0, nil)
 }

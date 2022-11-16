@@ -29,6 +29,7 @@ func (a *Api) StartApi() {
 	r.Use(gin.Recovery())
 	r.Use(gin.LoggerWithFormatter(logger.GetGinCustomLogger))
 	r.Use(middleware.LatencyMiddleware())
+	r.Use(middleware.AuthMiddleware())
 
 	router.Routes(r, a.App)
 
