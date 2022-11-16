@@ -2,6 +2,7 @@ package handler
 
 import (
 	"final-project-backend/domain"
+	"final-project-backend/initialize"
 	"final-project-backend/mocks"
 	"final-project-backend/util"
 	"net/http"
@@ -12,6 +13,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestNewAuthHandler(t *testing.T) {
+	app := initialize.App()
+	authHandler := NewAuthHandler(app)
+
+	assert.NotNil(t, authHandler)
+}
 
 func TestRegister(t *testing.T) {
 	payload := &domain.AuthPayload{
