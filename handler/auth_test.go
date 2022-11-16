@@ -1,0 +1,107 @@
+package handler
+
+import (
+	"final-project-backend/domain"
+	"final-project-backend/mocks"
+	"final-project-backend/util"
+	"net/http"
+	"net/http/httptest"
+	"strings"
+	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
+)
+
+func TestRegister(t *testing.T) {
+	payload := &domain.AuthPayload{
+		Email:    "test@test.com",
+		Password: "1234",
+	}
+
+	jsonBody := `{
+		"email":"test@test.com",
+		"password":"1234"
+		}`
+
+	body := strings.NewReader(jsonBody)
+
+	s := mocks.NewAuthService(t)
+	h := authHandler{
+		s: s,
+	}
+
+	s.On("Register", payload).Return(util.SetResponse(nil, 0, nil))
+
+	router := gin.Default()
+	router.POST("/register", GinHandlerWrapper(h.Register))
+
+	req := httptest.NewRequest("POST", "/register", body)
+	res := httptest.NewRecorder()
+
+	router.ServeHTTP(res, req)
+
+	assert.Equal(t, http.StatusOK, res.Result().StatusCode)
+}
+
+func TestRegisterError(t *testing.T) {
+	payload := &domain.AuthPayload{
+		Email:    "test@test",
+		Password: "1234",
+	}
+
+	jsonBody := `{
+		"email":"test@test",
+		"password":"1234"
+		}`
+
+	body := strings.NewReader(jsonBody)
+
+	s := mocks.NewAuthService(t)
+	h := authHandler{
+		s: s,
+	}
+
+	s.On("Register", payload).Return(util.SetResponse(nil, http.StatusBadRequest, util.NewError("error")))
+
+	router := gin.Default()
+	router.POST("/register", GinHandlerWrapper(h.Register))
+
+	req := httptest.NewRequest("POST", "/register", body)
+	res := httptest.NewRecorder()
+
+	router.ServeHTTP(res, req)
+
+	assert.Equal(t, http.StatusBadRequest, res.Result().StatusCode)
+}
+
+func TestLogin(t *testing.T) {
+	payload := &domain.AuthPayload{
+		Email:    "test@test.com",
+		Password: "1234",
+	}
+
+	jsonBody := `{
+		"email":"test@test.com",
+		"password":"1234"
+		}`
+
+	body := strings.NewReader(jsonBody)
+
+	s := mocks.NewAuthService(t)
+	h := authHandler{
+		s: s,
+	}
+
+	s.On("Login", payload).Return(util.SetResponse(domain.LoginResponse{}, 0, nil))
+
+	router := gin.Default()
+	router.POST("/login", GinHandlerWrapper(h.Login))
+
+	req := httptest.NewRequest("POST", "/login", body)
+	res := httptest.NewRecorder()
+
+	router.ServeHTTP(res, req)
+
+	assert.Equal(t, http.StatusOK, res.Result().StatusCode)
+}
