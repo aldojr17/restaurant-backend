@@ -151,3 +151,70 @@ func TestCreateUserError(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func TestUpdateUserData(t *testing.T) {
+	s := SetupSuite()
+
+	uuid := util.GenerateUUID()
+
+	email := "admin@email.com"
+	username := "test"
+	fullname := "testtt"
+	phone := "081234567891"
+
+	data := map[string]interface{}{
+		"username":  username,
+		"full_name": fullname,
+		"phone":     phone,
+	}
+
+	rows := s.mock.NewRows([]string{"Id", "Email", "Password", "Username", "FullName", "Phone", "ProfilePicture", "Role", "CreatedAt", "UpdatedAt"}).
+		AddRow(uuid, "test_id", "1234", nil, nil, nil, nil, 1, time.Now(), time.Now())
+
+	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"username"=$3,"updated_at"=$4 WHERE "email" = $5 RETURNING *`
+
+	s.mock.ExpectBegin()
+	s.mock.ExpectQuery(regexp.QuoteMeta(query)).WillReturnRows(rows)
+	s.mock.ExpectCommit()
+
+	repo := NewUserRepository(s.db)
+
+	response := repo.UpdateUserData(email, data)
+	if response.Err != nil {
+		t.Errorf("Failed to select user by id, got error: %v", response.Err)
+		t.FailNow()
+	}
+
+	assert.NotNil(t, response.Data)
+}
+
+func TestUpdateUserDataError(t *testing.T) {
+	s := SetupSuite()
+
+	email := ""
+	username := "test"
+	fullname := "testtt"
+	phone := "081234567891"
+
+	data := map[string]interface{}{
+		"username":  username,
+		"full_name": fullname,
+		"phone":     phone,
+	}
+
+	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"username"=$3,"updated_at"=$4 WHERE "email" = $5 RETURNING *`
+
+	s.mock.ExpectBegin()
+	s.mock.ExpectQuery(regexp.QuoteMeta(query)).WillReturnError(errors.New("error"))
+	s.mock.ExpectCommit()
+
+	repo := NewUserRepository(s.db)
+
+	response := repo.UpdateUserData(email, data)
+	if response.Err == nil {
+		t.Errorf("Failed to select user by id, got error: %v", response.Err)
+		t.FailNow()
+	}
+
+	assert.NotNil(t, response.Err)
+}
