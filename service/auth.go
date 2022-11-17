@@ -49,7 +49,7 @@ func (s *authService) Register(payload *domain.AuthPayload) *domain.Response {
 func (s *authService) Login(payload *domain.AuthPayload) *domain.Response {
 	responseUser := s.userRepo.GetUserByEmail(payload.Email)
 	if responseUser.Err != nil {
-		return util.SetResponse(nil, http.StatusUnauthorized, responseUser.Err)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrWrongLoginCredential)
 	}
 
 	user := responseUser.Data.(*domain.User)
