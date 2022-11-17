@@ -61,13 +61,13 @@ func (_m *UserRepository) GetUserById(id string) *domain.Response {
 	return r0
 }
 
-// UpdateUserData provides a mock function with given fields: email, data
-func (_m *UserRepository) UpdateUserData(email string, data map[string]interface{}) *domain.Response {
-	ret := _m.Called(email, data)
+// UpdateUserData provides a mock function with given fields: id, data
+func (_m *UserRepository) UpdateUserData(id string, data map[string]interface{}) *domain.Response {
+	ret := _m.Called(id, data)
 
 	var r0 *domain.Response
 	if rf, ok := ret.Get(0).(func(string, map[string]interface{}) *domain.Response); ok {
-		r0 = rf(email, data)
+		r0 = rf(id, data)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*domain.Response)
