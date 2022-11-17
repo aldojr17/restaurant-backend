@@ -9,4 +9,5 @@ import (
 func Routes(router *gin.Engine, app *initialize.Application) {
 	AuthRoutes(router, app)
 	UserRoutes(router, app)
+	MenuRoutes(router, app)
 }

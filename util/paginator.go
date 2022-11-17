@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	SEARCH_BY_DESCRIPTION = "s"
-	SEARCH_BY_USER_ID     = "user_id"
-	DEFAULT_SORT_BY       = "date"
+	SEARCH_BY_NAME = "name"
+
+	DEFAULT_SORT_BY = "name"
 )
 
 type Pageable interface {
@@ -22,7 +22,7 @@ type Pageable interface {
 }
 
 type Page struct {
-	Data        interface{} `json:"list"`
+	Data        interface{} `json:"data"`
 	CurrentPage int         `json:"current_page"`
 	Total       int         `json:"total"`
 	TotalPage   int         `json:"total_page"`
