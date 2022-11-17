@@ -26,6 +26,7 @@ type Page struct {
 	CurrentPage int         `json:"current_page"`
 	Total       int         `json:"total"`
 	TotalPage   int         `json:"total_page"`
+	Limit       int         `json:"limit"`
 }
 
 type Paginator struct {
@@ -57,14 +58,14 @@ func (p *Paginator) Page() int {
 	}
 
 	if p.page <= 0 {
-		p.page = 0
+		p.page = 1
 	}
 
 	return p.page
 }
 
 func (p *Paginator) Offset() int {
-	return p.Page() * p.PerPageNums
+	return (p.Page() - 1) * p.PerPageNums
 }
 
 func (p *Paginator) Pageable(data interface{}) *Page {
@@ -73,6 +74,7 @@ func (p *Paginator) Pageable(data interface{}) *Page {
 		Total:       p.nums,
 		TotalPage:   p.pageNums,
 		Data:        data,
+		Limit:       p.PerPageNums,
 	}
 }
 

@@ -51,6 +51,7 @@ func PaginationSuccessResponse(c *gin.Context, data *util.Page) {
 		"current_page": data.CurrentPage,
 		"total":        data.Total,
 		"total_page":   data.TotalPage,
+		"limit":        data.Limit,
 	}
 	c.JSON(http.StatusOK, result)
 }
