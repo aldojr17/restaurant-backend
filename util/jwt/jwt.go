@@ -24,13 +24,14 @@ func GenerateToken(user_id string) (string, error) {
 		jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(now),
 			ExpiresAt: jwt.NewNumericDate(now.Add(jwtDuration)),
+			Issuer:    "jwtissuer",
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	ss, err := token.SignedString([]byte(secret))
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	return ss, nil
