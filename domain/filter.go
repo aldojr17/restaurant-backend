@@ -31,7 +31,7 @@ func (p *PageableRequest) SortBy() string {
 		return "name ASC"
 	}
 
-	if strings.ToLower(p.Sort_by) != "price" {
+	if strings.ToLower(p.Sort_by) != "price" && strings.ToLower(p.Sort_by) != "name" && strings.ToLower(p.Sort_by) != "rating" && strings.ToLower(p.Sort_by) != "is_available" {
 		return "name ASC"
 	}
 

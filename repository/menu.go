@@ -30,7 +30,6 @@ func (repo *menuRepository) GetAllMenu(pageable util.Pageable) (*util.Page, erro
 	}
 
 	if err := repo.db.Model(domain.Menu{}).Where("name ILIKE ?", arguments[0].(string)).
-		Where("is_available = ?", true).
 		Count(&count).Error; err != nil {
 		return util.NewPaginator(pageable.GetPage(), pageable.GetLimit(), 0).
 			Pageable(domain.Menus{}), err
@@ -46,8 +45,7 @@ func (repo *menuRepository) GetAllMenu(pageable util.Pageable) (*util.Page, erro
 
 	var menus domain.Menus
 
-	if err := repo.db.Preload("Category").Where("name ILIKE ?", arguments[0].(string)).
-		Where("is_available = ?", true).Order(arguments[1]).
+	if err := repo.db.Preload("Category").Where("name ILIKE ?", arguments[0].(string)).Order(arguments[1]).
 		Limit(arguments[2].(int)).Offset(arguments[3].(int)).Find(&menus).Error; err != nil {
 		return util.NewPaginator(pageable.GetPage(), pageable.GetLimit(), 0).
 			Pageable(domain.Menus{}), err
