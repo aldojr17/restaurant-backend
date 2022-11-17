@@ -17,13 +17,13 @@ func TestUpdateUserData(t *testing.T) {
 	service := NewUserService(s.db, userRepo, couponRepo)
 
 	userId := "aca0702f-df5a-4fa2-af22-596f90edaef8"
-	username := "test"
+	address := "test"
 	fullname := "testtt"
 	phone := "081234567891"
 
 	payload := new(domain.UserProfile)
 	payload.UserId = userId
-	payload.Username = username
+	payload.Address = address
 	payload.FullName = fullname
 	payload.Phone = phone
 
@@ -31,9 +31,9 @@ func TestUpdateUserData(t *testing.T) {
 	user.Id = userId
 
 	data := map[string]interface{}{
-		"username":  username,
 		"full_name": fullname,
 		"phone":     phone,
+		"address":   address,
 	}
 
 	userRepo.On("UpdateUserData", userId, data).Return(util.SetResponse(user, 0, nil))

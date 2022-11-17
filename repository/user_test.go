@@ -17,7 +17,7 @@ func TestGetUserById(t *testing.T) {
 
 	uuid := util.GenerateUUID()
 
-	rows := s.mock.NewRows([]string{"Id", "Email", "Password", "Username", "FullName", "Phone", "ProfilePicture", "Role", "CreatedAt", "UpdatedAt"}).
+	rows := s.mock.NewRows([]string{"Id", "Email", "Password", "Address", "FullName", "Phone", "ProfilePicture", "Role", "CreatedAt", "UpdatedAt"}).
 		AddRow(uuid, "test_id", "1234", nil, nil, nil, nil, 1, time.Now(), time.Now())
 
 	query := `SELECT * FROM "users" WHERE "id" = $1 ORDER BY "users"."id" LIMIT 1`
@@ -60,7 +60,7 @@ func TestGetUserByEmail(t *testing.T) {
 
 	uuid := util.GenerateUUID()
 
-	rows := s.mock.NewRows([]string{"Id", "Email", "Password", "Username", "FullName", "Phone", "ProfilePicture", "Role", "CreatedAt", "UpdatedAt"}).
+	rows := s.mock.NewRows([]string{"Id", "Email", "Password", "Address", "FullName", "Phone", "ProfilePicture", "Role", "CreatedAt", "UpdatedAt"}).
 		AddRow(uuid, "test_id@mail.com", "1234", nil, nil, nil, nil, 1, time.Now(), time.Now())
 
 	query := `SELECT * FROM "users" WHERE email = $1 ORDER BY "users"."id" LIMIT 1`
@@ -110,7 +110,7 @@ func TestCreateUser(t *testing.T) {
 		UpdatedAt: now,
 	}
 
-	query := `INSERT INTO "users" ("id","email","password","username","full_name","phone","profile_picture","role","created_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`
+	query := `INSERT INTO "users" ("id","email","password","Address","full_name","phone","profile_picture","role","created_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`
 
 	s.mock.ExpectBegin()
 	s.mock.ExpectExec(regexp.QuoteMeta(query)).WithArgs(uuid, s.user.Email, s.user.Password, nil, nil, nil, nil, 1, now, now).WillReturnResult(sqlmock.NewResult(0, 0))
@@ -137,7 +137,7 @@ func TestCreateUserError(t *testing.T) {
 		CreatedAt: now,
 	}
 
-	query := `INSERT INTO "users" ("id","email","password","username","full_name","phone","profile_picture","role","created_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`
+	query := `INSERT INTO "users" ("id","email","password","Address","full_name","phone","profile_picture","role","created_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`
 
 	s.mock.ExpectBegin()
 	s.mock.ExpectExec(regexp.QuoteMeta(query)).WithArgs(uuid, s.user.Email, s.user.Password, nil, nil, nil, nil, 1, now, now).WillReturnError(errors.New("error"))
@@ -157,20 +157,20 @@ func TestUpdateUserData(t *testing.T) {
 
 	uuid := util.GenerateUUID()
 
-	username := "test"
+	address := "test"
 	fullname := "testtt"
 	phone := "081234567891"
 
 	data := map[string]interface{}{
-		"username":  username,
+		"address":   address,
 		"full_name": fullname,
 		"phone":     phone,
 	}
 
-	rows := s.mock.NewRows([]string{"Id", "Email", "Password", "Username", "FullName", "Phone", "ProfilePicture", "Role", "CreatedAt", "UpdatedAt"}).
+	rows := s.mock.NewRows([]string{"Id", "Email", "Password", "Address", "FullName", "Phone", "ProfilePicture", "Role", "CreatedAt", "UpdatedAt"}).
 		AddRow(uuid, "test_id", "1234", nil, nil, nil, nil, 1, time.Now(), time.Now())
 
-	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"username"=$3,"updated_at"=$4 WHERE "id" = $5 RETURNING *`
+	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"address"=$3,"updated_at"=$4 WHERE "id" = $5 RETURNING *`
 
 	s.mock.ExpectBegin()
 	s.mock.ExpectQuery(regexp.QuoteMeta(query)).WillReturnRows(rows)
@@ -191,17 +191,17 @@ func TestUpdateUserDataError(t *testing.T) {
 	s := SetupSuite()
 
 	id := ""
-	username := "test"
+	address := "test"
 	fullname := "testtt"
 	phone := "081234567891"
 
 	data := map[string]interface{}{
-		"username":  username,
+		"address":   address,
 		"full_name": fullname,
 		"phone":     phone,
 	}
 
-	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"username"=$3,"updated_at"=$4 WHERE "id" = $5 RETURNING *`
+	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"address"=$3,"updated_at"=$4 WHERE "id" = $5 RETURNING *`
 
 	s.mock.ExpectBegin()
 	s.mock.ExpectQuery(regexp.QuoteMeta(query)).WillReturnError(errors.New("error"))

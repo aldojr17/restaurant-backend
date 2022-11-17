@@ -11,7 +11,7 @@ type User struct {
 	Id             string         `gorm:"primaryKey;column:id"`
 	Email          string         `gorm:"column:email"`
 	Password       string         `gorm:"column:password"`
-	Username       sql.NullString `gorm:"column:username"`
+	Address        sql.NullString `gorm:"column:address"`
 	FullName       sql.NullString `gorm:"column:full_name"`
 	Phone          sql.NullString `gorm:"column:phone"`
 	ProfilePicture sql.NullString `gorm:"column:profile_picture"`
@@ -22,7 +22,7 @@ type User struct {
 
 type UserProfile struct {
 	UserId         string `json:"user_id"`
-	Username       string `json:"username"`
+	Address        string `json:"address"`
 	FullName       string `json:"full_name"`
 	Phone          string `json:"phone"`
 	ProfilePicture string `json:"profile_picture"`

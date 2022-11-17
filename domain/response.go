@@ -15,7 +15,7 @@ type LoginResponse struct {
 type UserResponse struct {
 	Id             string    `json:"id"`
 	Email          string    `json:"email"`
-	Username       string    `json:"username"`
+	Address        string    `json:"address"`
 	FullName       string    `json:"full_name"`
 	Phone          string    `json:"phone"`
 	ProfilePicture string    `json:"profile_picture"`

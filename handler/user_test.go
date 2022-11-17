@@ -24,13 +24,13 @@ func TestNewUserHandler(t *testing.T) {
 func TestUpdateUserData(t *testing.T) {
 	payload := &domain.UserProfile{
 		UserId:   "aca0702f-df5a-4fa2-af22-596f90edaef8",
-		Username: "test",
+		Address:  "test",
 		FullName: "testtt",
 		Phone:    "081234567891",
 	}
 
 	jsonBody := `{
-		"username":"test",
+		"address":"test",
 		"full_name":"testtt",
 		"phone":"081234567891"
 		}`
@@ -58,7 +58,7 @@ func TestUpdateUserData(t *testing.T) {
 
 func TestUpdateUserDataErrorEmail(t *testing.T) {
 	jsonBody := `{
-		"username":"test",
+		"address":"test",
 		"full_name":"testtt",
 		"phone":"081234567891"
 		}`
