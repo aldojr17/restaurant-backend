@@ -14,8 +14,8 @@ var (
 	ErrUnauthorized = NewError("unauthorized")
 
 	ErrNoRoute              = errorNotFound("route")
-	ErrUserNotFound         = errorNotFound("user")
 	ErrWrongLoginCredential = NewError("wrong email or password")
+	ErrEmailAlreadyExists   = NewError("email already exists")
 )
 
 func GeneratePassword(password string) (string, error) {

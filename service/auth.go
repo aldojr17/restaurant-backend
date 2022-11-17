@@ -40,7 +40,7 @@ func (s *authService) Register(payload *domain.AuthPayload) *domain.Response {
 
 	createUser := s.userRepo.CreateUser(user)
 	if createUser.Err != nil {
-		return util.SetResponse(nil, http.StatusBadRequest, createUser.Err)
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrEmailAlreadyExists)
 	}
 
 	return util.SetResponse(domain.ResponseUserRegistered, 0, nil)
