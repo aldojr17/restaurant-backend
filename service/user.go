@@ -10,18 +10,21 @@ import (
 type (
 	UserService interface {
 		UpdateUserData(payload *domain.UserProfile) *domain.Response
+		GetCoupons(user_id string) *domain.Response
 	}
 
 	userService struct {
-		db       *gorm.DB
-		userRepo repository.UserRepository
+		db         *gorm.DB
+		userRepo   repository.UserRepository
+		couponRepo repository.CouponRepository
 	}
 )
 
-func NewUserService(db *gorm.DB, userRepo repository.UserRepository) UserService {
+func NewUserService(db *gorm.DB, userRepo repository.UserRepository, couponRepo repository.CouponRepository) UserService {
 	return &userService{
-		db:       db,
-		userRepo: userRepo,
+		db:         db,
+		userRepo:   userRepo,
+		couponRepo: couponRepo,
 	}
 }
 
@@ -32,5 +35,9 @@ func (s *userService) UpdateUserData(payload *domain.UserProfile) *domain.Respon
 		"phone":     payload.Phone,
 	}
 
-	return s.userRepo.UpdateUserData(payload.Email, data)
+	return s.userRepo.UpdateUserData(payload.UserId, data)
+}
+
+func (s *userService) GetCoupons(user_id string) *domain.Response {
+	return s.couponRepo.GetCouponOwnedByUser(user_id)
 }

@@ -13,7 +13,7 @@ var (
 )
 
 const (
-	EMAIL = "email"
+	USER_ID = "user_id"
 
 	ResponseUserRegistered = "User Registered."
 	ResponseUserCreated    = "User Created."

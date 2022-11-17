@@ -12,15 +12,15 @@ var (
 )
 
 type CustomClaims struct {
-	Email string `json:"email"`
+	UserId string `json:"user_id"`
 	jwt.RegisteredClaims
 }
 
-func GenerateToken(email string) (string, error) {
+func GenerateToken(user_id string) (string, error) {
 	now := time.Now()
 
 	claims := CustomClaims{
-		email,
+		user_id,
 		jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(now),
 			ExpiresAt: jwt.NewNumericDate(now.Add(jwtDuration)),
@@ -50,7 +50,7 @@ func ValidateToken(input string) (string, error) {
 	}
 
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
-		return claims.Email, nil
+		return claims.UserId, nil
 	} else {
 		return "", err
 	}

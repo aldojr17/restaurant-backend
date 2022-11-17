@@ -58,7 +58,7 @@ func (s *authService) Login(payload *domain.AuthPayload) *domain.Response {
 		return util.SetResponse(nil, http.StatusBadRequest, util.ErrWrongLoginCredential)
 	}
 
-	signedToken, err := jwt.GenerateToken(user.Email)
+	signedToken, err := jwt.GenerateToken(user.Id)
 	if err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}

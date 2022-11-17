@@ -16,7 +16,7 @@ type (
 
 		CreateUser(user *domain.User) *domain.Response
 
-		UpdateUserData(email string, data map[string]interface{}) *domain.Response
+		UpdateUserData(id string, data map[string]interface{}) *domain.Response
 	}
 
 	userRepository struct {
@@ -58,10 +58,10 @@ func (repo *userRepository) CreateUser(user *domain.User) *domain.Response {
 	return util.SetResponse(domain.ResponseUserCreated, 0, nil)
 }
 
-func (repo *userRepository) UpdateUserData(email string, data map[string]interface{}) *domain.Response {
+func (repo *userRepository) UpdateUserData(id string, data map[string]interface{}) *domain.Response {
 	user := new(domain.UserResponse)
 
-	if err := repo.db.Table("users").Model(&user).Clauses(clause.Returning{}).Where("email", email).Updates(data).Error; err != nil {
+	if err := repo.db.Table("users").Model(&user).Clauses(clause.Returning{}).Where("id", id).Updates(data).Error; err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
 

@@ -27,14 +27,14 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		authToken = strings.Replace(authToken, "Bearer ", "", 1)
 
-		email, err := jwt.ValidateToken(authToken)
-		if err != nil || email == "" {
+		user_id, err := jwt.ValidateToken(authToken)
+		if err != nil || user_id == "" {
 			handler.ErrorResponse(ctx, http.StatusUnauthorized, util.ErrUnauthorized)
 			ctx.Abort()
 			return
 		}
 
-		ctx.Set(domain.EMAIL, email)
+		ctx.Set(domain.USER_ID, user_id)
 
 		ctx.Next()
 	}
