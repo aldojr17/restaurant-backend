@@ -29,6 +29,22 @@ func (_m *UserService) GetCoupons(user_id string) *domain.Response {
 	return r0
 }
 
+// GetProfile provides a mock function with given fields: user_id
+func (_m *UserService) GetProfile(user_id string) *domain.Response {
+	ret := _m.Called(user_id)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(string) *domain.Response); ok {
+		r0 = rf(user_id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 // UpdateUserData provides a mock function with given fields: payload
 func (_m *UserService) UpdateUserData(payload *domain.UserProfile) *domain.Response {
 	ret := _m.Called(payload)

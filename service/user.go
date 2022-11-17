@@ -11,6 +11,7 @@ type (
 	UserService interface {
 		UpdateUserData(payload *domain.UserProfile) *domain.Response
 		GetCoupons(user_id string) *domain.Response
+		GetProfile(user_id string) *domain.Response
 	}
 
 	userService struct {
@@ -40,4 +41,8 @@ func (s *userService) UpdateUserData(payload *domain.UserProfile) *domain.Respon
 
 func (s *userService) GetCoupons(user_id string) *domain.Response {
 	return s.couponRepo.GetCouponOwnedByUser(user_id)
+}
+
+func (s *userService) GetProfile(user_id string) *domain.Response {
+	return s.userRepo.GetUserById(user_id)
 }

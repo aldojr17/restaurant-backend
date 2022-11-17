@@ -14,5 +14,6 @@ func UserRoutes(router *gin.Engine, app *initialize.Application) {
 	{
 		users.PUT("/change-profile", handler.GinHandlerWrapper(userHandler.UpdateUserData))
 		users.GET("/coupons", handler.GinHandlerWrapper(userHandler.GetCoupons))
+		users.GET("/profile", handler.GinHandlerWrapper(userHandler.GetProfile))
 	}
 }
