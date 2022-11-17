@@ -13,21 +13,22 @@ func TestUpdateUserData(t *testing.T) {
 	s := SetupMockDb()
 
 	userRepo := mocks.NewUserRepository(t)
-	service := NewUserService(s.db, userRepo)
+	couponRepo := mocks.NewCouponRepository(t)
+	service := NewUserService(s.db, userRepo, couponRepo)
 
-	email := "admin@email.com"
+	userId := "aca0702f-df5a-4fa2-af22-596f90edaef8"
 	username := "test"
 	fullname := "testtt"
 	phone := "081234567891"
 
 	payload := new(domain.UserProfile)
-	payload.Email = email
+	payload.UserId = userId
 	payload.Username = username
 	payload.FullName = fullname
 	payload.Phone = phone
 
 	user := new(domain.UserResponse)
-	user.Email = email
+	user.Id = userId
 
 	data := map[string]interface{}{
 		"username":  username,
@@ -35,8 +36,23 @@ func TestUpdateUserData(t *testing.T) {
 		"phone":     phone,
 	}
 
-	userRepo.On("UpdateUserData", email, data).Return(util.SetResponse(user, 0, nil))
+	userRepo.On("UpdateUserData", userId, data).Return(util.SetResponse(user, 0, nil))
 
 	response := service.UpdateUserData(payload)
+	assert.Nil(t, response.Err)
+}
+
+func TestGetCoupons(t *testing.T) {
+	s := SetupMockDb()
+
+	userRepo := mocks.NewUserRepository(t)
+	couponRepo := mocks.NewCouponRepository(t)
+	service := NewUserService(s.db, userRepo, couponRepo)
+
+	userId := "aca0702f-df5a-4fa2-af22-596f90edaef8"
+
+	couponRepo.On("GetCouponOwnedByUser", userId).Return(util.SetResponse(nil, 0, nil))
+
+	response := service.GetCoupons(userId)
 	assert.Nil(t, response.Err)
 }
