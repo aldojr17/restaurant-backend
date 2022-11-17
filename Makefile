@@ -1,5 +1,6 @@
 mockery:
 	mockery --dir=./service/ --name=AuthService --output=./mocks
+	mockery --dir=./service/ --name=UserService --output=./mocks
 	mockery --dir=./repository/ --name=UserRepository --output=./mocks
 
 test:
