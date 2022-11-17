@@ -157,7 +157,6 @@ func TestUpdateUserData(t *testing.T) {
 
 	uuid := util.GenerateUUID()
 
-	email := "admin@email.com"
 	username := "test"
 	fullname := "testtt"
 	phone := "081234567891"
@@ -171,7 +170,7 @@ func TestUpdateUserData(t *testing.T) {
 	rows := s.mock.NewRows([]string{"Id", "Email", "Password", "Username", "FullName", "Phone", "ProfilePicture", "Role", "CreatedAt", "UpdatedAt"}).
 		AddRow(uuid, "test_id", "1234", nil, nil, nil, nil, 1, time.Now(), time.Now())
 
-	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"username"=$3,"updated_at"=$4 WHERE "email" = $5 RETURNING *`
+	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"username"=$3,"updated_at"=$4 WHERE "id" = $5 RETURNING *`
 
 	s.mock.ExpectBegin()
 	s.mock.ExpectQuery(regexp.QuoteMeta(query)).WillReturnRows(rows)
@@ -179,7 +178,7 @@ func TestUpdateUserData(t *testing.T) {
 
 	repo := NewUserRepository(s.db)
 
-	response := repo.UpdateUserData(email, data)
+	response := repo.UpdateUserData(uuid, data)
 	if response.Err != nil {
 		t.Errorf("Failed to select user by id, got error: %v", response.Err)
 		t.FailNow()
@@ -191,7 +190,7 @@ func TestUpdateUserData(t *testing.T) {
 func TestUpdateUserDataError(t *testing.T) {
 	s := SetupSuite()
 
-	email := ""
+	id := ""
 	username := "test"
 	fullname := "testtt"
 	phone := "081234567891"
@@ -202,7 +201,7 @@ func TestUpdateUserDataError(t *testing.T) {
 		"phone":     phone,
 	}
 
-	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"username"=$3,"updated_at"=$4 WHERE "email" = $5 RETURNING *`
+	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"username"=$3,"updated_at"=$4 WHERE "id" = $5 RETURNING *`
 
 	s.mock.ExpectBegin()
 	s.mock.ExpectQuery(regexp.QuoteMeta(query)).WillReturnError(errors.New("error"))
@@ -210,7 +209,7 @@ func TestUpdateUserDataError(t *testing.T) {
 
 	repo := NewUserRepository(s.db)
 
-	response := repo.UpdateUserData(email, data)
+	response := repo.UpdateUserData(id, data)
 	if response.Err == nil {
 		t.Errorf("Failed to select user by id, got error: %v", response.Err)
 		t.FailNow()
