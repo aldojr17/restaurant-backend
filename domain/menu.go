@@ -18,8 +18,8 @@ type Menu struct {
 }
 
 type MenuOption struct {
-	MenuId  int    `gorm:"primaryKey;column:menu_id"`
-	OrderId int    `gorm:"primaryKey;column:order_id"`
+	MenuId  int    `gorm:"column:menu_id"`
+	OrderId int    `gorm:"column:order_id"`
 	Qty     int    `gorm:"qty"`
 	Options string `gorm:"options"`
 }
