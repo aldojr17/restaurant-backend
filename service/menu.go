@@ -9,7 +9,7 @@ import (
 
 type (
 	MenuService interface {
-		GetAllMenu(pageable util.Pageable) (*util.Page, error)
+		GetAllMenus(pageable util.Pageable) (*util.Page, error)
 	}
 
 	menuService struct {
@@ -25,6 +25,6 @@ func NewMenuService(db *gorm.DB, menuRepo repository.MenuRepository) MenuService
 	}
 }
 
-func (s *menuService) GetAllMenu(pageable util.Pageable) (*util.Page, error) {
-	return s.menuRepo.GetAllMenu(pageable)
+func (s *menuService) GetAllMenus(pageable util.Pageable) (*util.Page, error) {
+	return s.menuRepo.GetAllMenus(pageable)
 }

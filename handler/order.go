@@ -12,26 +12,31 @@ import (
 )
 
 type (
-	menuHandler struct {
-		s service.MenuService
+	orderHandler struct {
+		s service.OrderService
 	}
 
-	MenuHandler interface {
-		GetAllMenus(c *gin.Context) *domain.Response
+	OrderHandler interface {
+		GetAllOrders(c *gin.Context) *domain.Response
 	}
 )
 
-func NewMenuHandler(app *initialize.Application) MenuHandler {
-	return &menuHandler{
-		s: service.NewMenuService(
+func NewOrderHandler(app *initialize.Application) OrderHandler {
+	return &orderHandler{
+		s: service.NewOrderService(
 			app.DB,
-			repository.NewMenuRepository(app.DB),
+			repository.NewOrderRepository(app.DB),
 		),
 	}
 }
 
-func (h *menuHandler) GetAllMenus(c *gin.Context) *domain.Response {
-	data, err := h.s.GetAllMenus(newMenuPageableRequest(c.Request))
+func (h *orderHandler) GetAllOrders(c *gin.Context) *domain.Response {
+	user_id, exists := c.Get(domain.USER_ID)
+	if !exists {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	data, err := h.s.GetAllOrders(newOrderPageableRequest(c.Request), user_id.(string))
 	if err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
@@ -39,15 +44,15 @@ func (h *menuHandler) GetAllMenus(c *gin.Context) *domain.Response {
 	return util.SetResponse(data, 0, nil)
 }
 
-func newMenuPageableRequest(r *http.Request) *domain.PageableRequest {
+func newOrderPageableRequest(r *http.Request) *domain.PageableRequest {
 	p := &domain.PageableRequest{}
 	p.Page = util.PageFromQueryParam(r)
 	p.Limit = util.LimitFromQueryParam(r)
 	p.Sort_by = util.SortValueFromQueryParam(r)
-	p.Type = "menu"
+	p.Type = "order"
 
 	if p.Sort_by == "" {
-		p.Sort_by = util.DEFAULT_SORT_BY
+		p.Sort_by = util.DEFAULT_SORT_BY_ORDER
 	}
 
 	p.Desceding = util.SortDirectionFromQueryParam(r)

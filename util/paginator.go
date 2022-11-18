@@ -10,7 +10,8 @@ import (
 const (
 	SEARCH_BY_NAME = "name"
 
-	DEFAULT_SORT_BY = "name"
+	DEFAULT_SORT_BY       = "name"
+	DEFAULT_SORT_BY_ORDER = "order_date"
 )
 
 type Pageable interface {

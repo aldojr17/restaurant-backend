@@ -12,6 +12,7 @@ type PageableRequest struct {
 	Page      int
 	Sort_by   string
 	Desceding string
+	Type      string
 }
 
 func (p *PageableRequest) SearchParams() map[string]interface{} {
@@ -31,7 +32,16 @@ func (p *PageableRequest) SortBy() string {
 		return "name ASC"
 	}
 
-	if strings.ToLower(p.Sort_by) != "price" && strings.ToLower(p.Sort_by) != "name" && strings.ToLower(p.Sort_by) != "rating" && strings.ToLower(p.Sort_by) != "is_available" {
+	switch p.Type {
+	case "menu":
+		if strings.ToLower(p.Sort_by) != "price" && strings.ToLower(p.Sort_by) != "name" && strings.ToLower(p.Sort_by) != "rating" && strings.ToLower(p.Sort_by) != "is_available" {
+			return "name ASC"
+		}
+	case "order":
+		if strings.ToLower(p.Sort_by) != "order_date" {
+			return "order_date DESC"
+		}
+	default:
 		return "name ASC"
 	}
 

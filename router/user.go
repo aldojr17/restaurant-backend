@@ -9,6 +9,7 @@ import (
 
 func UserRoutes(router *gin.Engine, app *initialize.Application) {
 	userHandler := handler.NewUserHandler(app)
+	orderHandler := handler.NewOrderHandler(app)
 
 	users := router.Group("/users")
 	{
@@ -16,5 +17,6 @@ func UserRoutes(router *gin.Engine, app *initialize.Application) {
 		users.GET("/coupons", handler.GinHandlerWrapper(userHandler.GetCoupons))
 		users.GET("/profile", handler.GinHandlerWrapper(userHandler.GetProfile))
 		users.POST("/favorites", handler.GinHandlerWrapper(userHandler.AddMenuFavorite))
+		users.GET("/orders", handler.GinHandlerWrapper(orderHandler.GetAllOrders))
 	}
 }

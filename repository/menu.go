@@ -9,7 +9,7 @@ import (
 
 type (
 	MenuRepository interface {
-		GetAllMenu(pageable util.Pageable) (*util.Page, error)
+		GetAllMenus(pageable util.Pageable) (*util.Page, error)
 	}
 
 	menuRepository struct {
@@ -23,7 +23,7 @@ func NewMenuRepository(db *gorm.DB) MenuRepository {
 	}
 }
 
-func (repo *menuRepository) GetAllMenu(pageable util.Pageable) (*util.Page, error) {
+func (repo *menuRepository) GetAllMenus(pageable util.Pageable) (*util.Page, error) {
 	var count int64
 	arguments := []interface{}{
 		pageable.SearchParams()[util.SEARCH_BY_NAME],
