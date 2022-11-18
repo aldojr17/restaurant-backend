@@ -40,7 +40,7 @@ func (s *authService) Register(payload *domain.AuthPayload) *domain.Response {
 
 	createUser := s.userRepo.CreateUser(user)
 	if createUser.Err != nil {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrEmailAlreadyExists)
+		return util.SetResponse(nil, http.StatusBadRequest, domain.ErrEmailAlreadyExists)
 	}
 
 	return util.SetResponse(domain.ResponseUserRegistered, 0, nil)
@@ -49,13 +49,13 @@ func (s *authService) Register(payload *domain.AuthPayload) *domain.Response {
 func (s *authService) Login(payload *domain.AuthPayload) *domain.Response {
 	responseUser := s.userRepo.GetUserByEmail(payload.Email)
 	if responseUser.Err != nil {
-		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrWrongLoginCredential)
+		return util.SetResponse(nil, http.StatusUnauthorized, domain.ErrWrongLoginCredential)
 	}
 
 	user := responseUser.Data.(*domain.User)
 
 	if !util.ComparePassword(user.Password, payload.Password) {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrWrongLoginCredential)
+		return util.SetResponse(nil, http.StatusBadRequest, domain.ErrWrongLoginCredential)
 	}
 
 	signedToken, err := jwt.GenerateToken(user.Id)

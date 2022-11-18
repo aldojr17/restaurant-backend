@@ -9,9 +9,12 @@ import (
 
 type (
 	UserService interface {
-		UpdateUserData(payload *domain.UserProfile) *domain.Response
 		GetCoupons(user_id string) *domain.Response
 		GetProfile(user_id string) *domain.Response
+
+		AddMenuFavorite(payload *domain.UserFavorite) *domain.Response
+
+		UpdateUserData(payload *domain.UserProfile) *domain.Response
 	}
 
 	userService struct {
@@ -45,4 +48,8 @@ func (s *userService) GetCoupons(user_id string) *domain.Response {
 
 func (s *userService) GetProfile(user_id string) *domain.Response {
 	return s.userRepo.GetUserById(user_id)
+}
+
+func (s *userService) AddMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+	return s.userRepo.AddMenuFavorite(payload)
 }

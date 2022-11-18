@@ -13,6 +13,22 @@ type UserRepository struct {
 	mock.Mock
 }
 
+// AddMenuFavorite provides a mock function with given fields: payload
+func (_m *UserRepository) AddMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+	ret := _m.Called(payload)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(*domain.UserFavorite) *domain.Response); ok {
+		r0 = rf(payload)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 // CreateUser provides a mock function with given fields: user
 func (_m *UserRepository) CreateUser(user *domain.User) *domain.Response {
 	ret := _m.Called(user)

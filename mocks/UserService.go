@@ -13,6 +13,22 @@ type UserService struct {
 	mock.Mock
 }
 
+// AddMenuFavorite provides a mock function with given fields: payload
+func (_m *UserService) AddMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+	ret := _m.Called(payload)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(*domain.UserFavorite) *domain.Response); ok {
+		r0 = rf(payload)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 // GetCoupons provides a mock function with given fields: user_id
 func (_m *UserService) GetCoupons(user_id string) *domain.Response {
 	ret := _m.Called(user_id)

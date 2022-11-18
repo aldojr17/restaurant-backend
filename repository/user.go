@@ -15,6 +15,7 @@ type (
 		GetUserByEmail(email string) *domain.Response
 
 		CreateUser(user *domain.User) *domain.Response
+		AddMenuFavorite(payload *domain.UserFavorite) *domain.Response
 
 		UpdateUserData(id string, data map[string]interface{}) *domain.Response
 	}
@@ -66,4 +67,12 @@ func (repo *userRepository) UpdateUserData(id string, data map[string]interface{
 	}
 
 	return util.SetResponse(user, 0, nil)
+}
+
+func (repo *userRepository) AddMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+	if err := repo.db.Create(&payload).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, domain.ErrMenuAlreadyAdded)
+	}
+
+	return util.SetResponse(domain.ResponseAddedToFavorite, 0, nil)
 }
