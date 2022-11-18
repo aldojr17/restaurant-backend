@@ -21,6 +21,7 @@ const (
 
 	ResponseUserRegistered  = "User Registered."
 	ResponseUserCreated     = "User Created."
+	ResponseReviewAdded     = "Review Added."
 	ResponseAddedToFavorite = "Menu added to favorite."
 )
 
