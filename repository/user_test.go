@@ -103,6 +103,7 @@ func TestCreateUser(t *testing.T) {
 	uuid := util.GenerateUUID()
 	s.user = &domain.User{
 		Id:        uuid,
+		FullName:  "test",
 		Email:     "test@gmail.com",
 		Password:  "1234",
 		Role:      1,
@@ -110,10 +111,10 @@ func TestCreateUser(t *testing.T) {
 		UpdatedAt: now,
 	}
 
-	query := `INSERT INTO "users" ("id","email","password","Address","full_name","phone","profile_picture","role","created_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`
+	query := `INSERT INTO "users" ("id","email","password","address","full_name","phone","profile_picture","role","created_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`
 
 	s.mock.ExpectBegin()
-	s.mock.ExpectExec(regexp.QuoteMeta(query)).WithArgs(uuid, s.user.Email, s.user.Password, nil, nil, nil, nil, 1, now, now).WillReturnResult(sqlmock.NewResult(0, 0))
+	s.mock.ExpectExec(regexp.QuoteMeta(query)).WithArgs(uuid, s.user.Email, s.user.Password, nil, s.user.FullName, nil, nil, 1, now, now).WillReturnResult(sqlmock.NewResult(0, 0))
 	s.mock.ExpectCommit()
 
 	repo := NewUserRepository(s.db)
@@ -170,7 +171,7 @@ func TestUpdateUserData(t *testing.T) {
 	rows := s.mock.NewRows([]string{"Id", "Email", "Password", "Address", "FullName", "Phone", "ProfilePicture", "Role", "CreatedAt", "UpdatedAt"}).
 		AddRow(uuid, "test_id", "1234", nil, nil, nil, nil, 1, time.Now(), time.Now())
 
-	query := `UPDATE "users" SET "full_name"=$1,"phone"=$2,"address"=$3,"updated_at"=$4 WHERE "id" = $5 RETURNING *`
+	query := `UPDATE "users" SET "address"=$1,"full_name"=$2,"phone"=$3,"updated_at"=$4 WHERE "id" = $5 RETURNING *`
 
 	s.mock.ExpectBegin()
 	s.mock.ExpectQuery(regexp.QuoteMeta(query)).WillReturnRows(rows)
