@@ -14,7 +14,8 @@ func TestUpdateUserData(t *testing.T) {
 
 	userRepo := mocks.NewUserRepository(t)
 	couponRepo := mocks.NewCouponRepository(t)
-	service := NewUserService(s.db, userRepo, couponRepo)
+	menuRepo := mocks.NewMenuRepository(t)
+	service := NewUserService(s.db, userRepo, couponRepo, menuRepo)
 
 	userId := "aca0702f-df5a-4fa2-af22-596f90edaef8"
 	address := "test"
@@ -47,7 +48,8 @@ func TestGetCoupons(t *testing.T) {
 
 	userRepo := mocks.NewUserRepository(t)
 	couponRepo := mocks.NewCouponRepository(t)
-	service := NewUserService(s.db, userRepo, couponRepo)
+	menuRepo := mocks.NewMenuRepository(t)
+	service := NewUserService(s.db, userRepo, couponRepo, menuRepo)
 
 	userId := "aca0702f-df5a-4fa2-af22-596f90edaef8"
 
