@@ -18,11 +18,18 @@ var (
 
 const (
 	USER_ID = "user_id"
+	ROLE_ID = "role_id"
 
-	ResponseUserRegistered  = "User Registered."
-	ResponseUserCreated     = "User Created."
-	ResponseReviewAdded     = "Review Added."
-	ResponseAddedToFavorite = "Menu added to favorite."
+	ResponseUserRegistered     = "User Registered."
+	ResponseUserCreated        = "User Created."
+	ResponseReviewAdded        = "Review Added."
+	ResponseAddedToFavorite    = "Menu added to favorite."
+	ResponseOrderStatusUpdated = "Order Status Updated."
+	ResponseCouponCreated      = "Coupon Created."
+
+	DELIVERY_STATUS_IN_PROGRESS = "In Progress"
+	DELIVERY_STATUS_IN_TRANSIT  = "In Transit"
+	DELIVERY_STATUS_RECEIVED    = "Received"
 )
 
 var regex = regexp.MustCompile("^[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)*$")
