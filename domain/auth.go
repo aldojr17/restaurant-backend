@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"strings"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,7 +26,7 @@ func (a *AuthPayload) Validate(c *gin.Context) error {
 		return ErrEmailRequired
 	}
 
-	if a.Password == "" {
+	if strings.TrimSpace(a.Password) == "" {
 		return ErrPasswordRequired
 	}
 
@@ -48,7 +50,7 @@ func (a *RegisterPayload) Validate(c *gin.Context) error {
 		return ErrEmailRequired
 	}
 
-	if a.Password == "" {
+	if strings.TrimSpace(a.Password) == "" {
 		return ErrPasswordRequired
 	}
 
