@@ -12,7 +12,7 @@ import (
 
 type (
 	AuthService interface {
-		Register(payload *domain.AuthPayload) *domain.Response
+		Register(payload *domain.RegisterPayload) *domain.Response
 		Login(payload *domain.AuthPayload) *domain.Response
 	}
 
@@ -29,14 +29,14 @@ func NewAuthService(db *gorm.DB, userRepo repository.UserRepository) AuthService
 	}
 }
 
-func (s *authService) Register(payload *domain.AuthPayload) *domain.Response {
+func (s *authService) Register(payload *domain.RegisterPayload) *domain.Response {
 	hashedPass, err := util.GeneratePassword(payload.Password)
 	if err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
 
 	uuid := util.GenerateUUID()
-	user := util.SetUser(uuid, payload.Email, hashedPass)
+	user := util.SetUser(uuid, payload.Email, hashedPass, payload.FullName)
 
 	createUser := s.userRepo.CreateUser(user)
 	if createUser.Err != nil {

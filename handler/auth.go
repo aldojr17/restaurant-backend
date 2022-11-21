@@ -32,7 +32,7 @@ func NewAuthHandler(app *initialize.Application) AuthHandler {
 }
 
 func (h *authHandler) Register(c *gin.Context) *domain.Response {
-	param := new(domain.AuthPayload)
+	param := new(domain.RegisterPayload)
 	if err := param.Validate(c); err != nil {
 		return util.SetResponse(nil, http.StatusBadRequest, err)
 	}

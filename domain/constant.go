@@ -8,6 +8,7 @@ import (
 var (
 	ErrEmailRequired    = errors.New("email is required")
 	ErrPasswordRequired = errors.New("password is required")
+	ErrFullNameRequired = errors.New("fullname is required")
 	ErrMenuIdRequired   = errors.New("menu id is required")
 
 	ErrIncorrectEmailFormat = errors.New("invalid email format")

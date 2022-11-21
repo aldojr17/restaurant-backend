@@ -37,12 +37,13 @@ func SetResponse(data interface{}, code int, err error) *domain.Response {
 	}
 }
 
-func SetUser(id, email, password string) *domain.User {
+func SetUser(id, email, password, fullname string) *domain.User {
 	user := new(domain.User)
 	user.Id = id
 	user.Email = strings.ToLower(email)
 	user.Password = password
 	user.Role = 1
+	user.FullName = fullname
 	return user
 }
 

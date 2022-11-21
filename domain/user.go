@@ -12,7 +12,7 @@ type User struct {
 	Email          string         `gorm:"column:email"`
 	Password       string         `gorm:"column:password"`
 	Address        sql.NullString `gorm:"column:address"`
-	FullName       sql.NullString `gorm:"column:full_name"`
+	FullName       string         `gorm:"column:full_name"`
 	Phone          sql.NullString `gorm:"column:phone"`
 	ProfilePicture sql.NullString `gorm:"column:profile_picture"`
 	Role           int            `gorm:"column:role"`
