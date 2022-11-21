@@ -8,11 +8,12 @@ import (
 )
 
 type Coupon struct {
-	Id        string         `gorm:"primaryKey;column:id" json:"id"`
-	Code      string         `gorm:"column:code" json:"code"`
-	Discount  int            `gorm:"column:discount" json:"discount"`
-	CreatedAt time.Time      `gorm:"column:created_at" json:"created_at"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
+	Id         string         `gorm:"primaryKey;column:id" json:"id"`
+	Code       string         `gorm:"column:code" json:"code"`
+	Discount   int            `gorm:"column:discount" json:"discount"`
+	ValidUntil time.Time      `gorm:"column:valid_until" json:"valid_until"`
+	CreatedAt  time.Time      `gorm:"column:created_at" json:"created_at"`
+	DeletedAt  gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 }
 
 type UserCoupon struct {
