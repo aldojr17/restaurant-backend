@@ -47,7 +47,7 @@ func (repo *orderRepository) GetAllUserOrders(pageable util.Pageable, user_id st
 
 	var orders domain.Orders
 
-	if err := repo.db.Preload("MenuOptions.MenuDetail.Category").Where("user_id = ?", user_id).Order(arguments[1]).Limit(arguments[2].(int)).Offset(arguments[3].(int)).Find(&orders).Error; err != nil {
+	if err := repo.db.Preload("Payment").Preload("MenuOptions.MenuDetail.Category").Where("user_id = ?", user_id).Order(arguments[1]).Limit(arguments[2].(int)).Offset(arguments[3].(int)).Find(&orders).Error; err != nil {
 		return util.NewPaginator(pageable.GetPage(), pageable.GetLimit(), 0).
 			Pageable(domain.Orders{}), err
 	}
