@@ -34,9 +34,10 @@ func NewUserService(db *gorm.DB, userRepo repository.UserRepository, couponRepo 
 
 func (s *userService) UpdateUserData(payload *domain.UserProfile) *domain.Response {
 	data := map[string]interface{}{
-		"full_name": payload.FullName,
-		"phone":     payload.Phone,
-		"address":   payload.Address,
+		"full_name":       payload.FullName,
+		"phone":           payload.Phone,
+		"address":         payload.Address,
+		"profile_picture": payload.ProfilePicture,
 	}
 
 	return s.userRepo.UpdateUserData(payload.UserId, data)
