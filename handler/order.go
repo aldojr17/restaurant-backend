@@ -7,6 +7,7 @@ import (
 	"final-project-backend/service"
 	"final-project-backend/util"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +18,9 @@ type (
 	}
 
 	OrderHandler interface {
+		GetAllUserOrders(c *gin.Context) *domain.Response
 		GetAllOrders(c *gin.Context) *domain.Response
+		UpdateOrderStatus(c *gin.Context) *domain.Response
 	}
 )
 
@@ -30,18 +33,61 @@ func NewOrderHandler(app *initialize.Application) OrderHandler {
 	}
 }
 
-func (h *orderHandler) GetAllOrders(c *gin.Context) *domain.Response {
+func (h *orderHandler) GetAllUserOrders(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
 		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
 	}
 
-	data, err := h.s.GetAllOrders(newOrderPageableRequest(c.Request), user_id.(string))
+	data, err := h.s.GetAllUserOrders(newOrderPageableRequest(c.Request), user_id.(string))
 	if err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
 
 	return util.SetResponse(data, 0, nil)
+}
+
+func (h *orderHandler) GetAllOrders(c *gin.Context) *domain.Response {
+	role_id, exists := c.Get(domain.ROLE_ID)
+	if !exists {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	if role_id.(int) != 0 {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	data, err := h.s.GetAllOrders(newOrderPageableRequest(c.Request))
+	if err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(data, 0, nil)
+}
+
+func (h *orderHandler) UpdateOrderStatus(c *gin.Context) *domain.Response {
+	role_id, exists := c.Get(domain.ROLE_ID)
+	if !exists {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	if role_id.(int) != 0 {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	param := new(domain.OrderStatusPayload)
+
+	if id, err := strconv.Atoi(c.Param("id")); err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, domain.ErrMenuIdRequired)
+	} else {
+		param.Id = id
+	}
+
+	if err := param.Validate(c); err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, err)
+	}
+
+	return h.s.UpdateOrderStatus(param)
 }
 
 func newOrderPageableRequest(r *http.Request) *domain.PageableRequest {

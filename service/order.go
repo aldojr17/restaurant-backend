@@ -1,6 +1,7 @@
 package service
 
 import (
+	"final-project-backend/domain"
 	"final-project-backend/repository"
 	"final-project-backend/util"
 
@@ -9,7 +10,9 @@ import (
 
 type (
 	OrderService interface {
-		GetAllOrders(pageable util.Pageable, user_id string) (*util.Page, error)
+		GetAllUserOrders(pageable util.Pageable, user_id string) (*util.Page, error)
+		GetAllOrders(pageable util.Pageable) (*util.Page, error)
+		UpdateOrderStatus(order *domain.OrderStatusPayload) *domain.Response
 	}
 
 	orderService struct {
@@ -25,6 +28,14 @@ func NewOrderService(db *gorm.DB, orderRepo repository.OrderRepository) OrderSer
 	}
 }
 
-func (s *orderService) GetAllOrders(pageable util.Pageable, user_id string) (*util.Page, error) {
-	return s.orderRepo.GetAllOrders(pageable, user_id)
+func (s *orderService) GetAllUserOrders(pageable util.Pageable, user_id string) (*util.Page, error) {
+	return s.orderRepo.GetAllUserOrders(pageable, user_id)
+}
+
+func (s *orderService) GetAllOrders(pageable util.Pageable) (*util.Page, error) {
+	return s.orderRepo.GetAllOrders(pageable)
+}
+
+func (s *orderService) UpdateOrderStatus(order *domain.OrderStatusPayload) *domain.Response {
+	return s.orderRepo.UpdateOrderStatus(order)
 }
