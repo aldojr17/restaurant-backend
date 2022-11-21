@@ -22,5 +22,13 @@ func (r *Review) Validate(c *gin.Context) error {
 		return err
 	}
 
+	if r.MenuId <= 0 {
+		return ErrMenuIdRequired
+	}
+
+	if r.Rating < 0 || r.Rating > 5 {
+		return ErrRatingMinMax
+	}
+
 	return nil
 }

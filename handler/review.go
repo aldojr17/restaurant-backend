@@ -26,6 +26,7 @@ func NewReviewHandler(app *initialize.Application) ReviewHandler {
 		s: service.NewReviewService(
 			app.DB,
 			repository.NewReviewRepository(app.DB),
+			repository.NewMenuRepository(app.DB),
 		),
 	}
 }

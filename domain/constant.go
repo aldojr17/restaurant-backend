@@ -16,6 +16,7 @@ var (
 	ErrEmailAlreadyExists   = errors.New("email already exists")
 	ErrMenuAlreadyAdded     = errors.New("menu already added to favorite")
 	ErrMenuNotFound         = errors.New("menu not found")
+	ErrRatingMinMax         = errors.New("rating min 0 and max 5")
 )
 
 const (
@@ -25,6 +26,7 @@ const (
 	ResponseUserRegistered     = "User Registered."
 	ResponseUserCreated        = "User Created."
 	ResponseReviewAdded        = "Review Added."
+	ResponseReviewUpdated      = "Review Updated."
 	ResponseAddedToFavorite    = "Menu added to favorite."
 	ResponseOrderStatusUpdated = "Order Status Updated."
 	ResponseCouponCreated      = "Coupon Created."

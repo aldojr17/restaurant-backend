@@ -56,9 +56,7 @@ func (s *userService) GetProfile(user_id string) *domain.Response {
 }
 
 func (s *userService) AddMenuFavorite(payload *domain.UserFavorite) *domain.Response {
-	response := s.menuRepo.GetMenu(payload.MenuId)
-
-	if response.Err != nil {
+	if response := s.menuRepo.GetMenu(payload.MenuId); response.Err != nil {
 		return util.SetResponse(nil, http.StatusBadRequest, domain.ErrMenuNotFound)
 	}
 
