@@ -23,6 +23,7 @@ func main() {
 
 func (a *Api) StartApi() {
 	r := gin.New()
+	r.Use(middleware.Cors)
 
 	r.NoRoute(middleware.NoRoute())
 
