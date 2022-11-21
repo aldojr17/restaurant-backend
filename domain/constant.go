@@ -15,6 +15,7 @@ var (
 	ErrWrongLoginCredential = errors.New("wrong email or password")
 	ErrEmailAlreadyExists   = errors.New("email already exists")
 	ErrMenuAlreadyAdded     = errors.New("menu already added to favorite")
+	ErrMenuNotFound         = errors.New("menu not found")
 )
 
 const (

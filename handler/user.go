@@ -32,6 +32,7 @@ func NewUserHandler(app *initialize.Application) UserHandler {
 			app.DB,
 			repository.NewUserRepository(app.DB),
 			repository.NewCouponRepository(app.DB),
+			repository.NewMenuRepository(app.DB),
 		),
 	}
 }

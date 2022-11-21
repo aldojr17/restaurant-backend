@@ -3,6 +3,8 @@ package service
 import (
 	"final-project-backend/domain"
 	"final-project-backend/repository"
+	"final-project-backend/util"
+	"net/http"
 
 	"gorm.io/gorm"
 )
@@ -21,14 +23,16 @@ type (
 		db         *gorm.DB
 		userRepo   repository.UserRepository
 		couponRepo repository.CouponRepository
+		menuRepo   repository.MenuRepository
 	}
 )
 
-func NewUserService(db *gorm.DB, userRepo repository.UserRepository, couponRepo repository.CouponRepository) UserService {
+func NewUserService(db *gorm.DB, userRepo repository.UserRepository, couponRepo repository.CouponRepository, menuRepo repository.MenuRepository) UserService {
 	return &userService{
 		db:         db,
 		userRepo:   userRepo,
 		couponRepo: couponRepo,
+		menuRepo:   menuRepo,
 	}
 }
 
@@ -52,5 +56,11 @@ func (s *userService) GetProfile(user_id string) *domain.Response {
 }
 
 func (s *userService) AddMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+	response := s.menuRepo.GetMenu(payload.MenuId)
+
+	if response.Err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, domain.ErrMenuNotFound)
+	}
+
 	return s.userRepo.AddMenuFavorite(payload)
 }

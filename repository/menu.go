@@ -15,6 +15,7 @@ type (
 		CreateMenu(menu *domain.MenuPayload) *domain.Response
 		UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.Response
 		DeleteMenu(menu_id int) *domain.Response
+		GetMenu(menu_id int) *domain.Response
 	}
 
 	menuRepository struct {
@@ -79,6 +80,16 @@ func (repo *menuRepository) DeleteMenu(menu_id int) *domain.Response {
 	menu := new(domain.Menu)
 
 	if err := repo.db.Clauses(clause.Returning{}).Delete(menu, menu_id).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(menu, 0, nil)
+}
+
+func (repo *menuRepository) GetMenu(menu_id int) *domain.Response {
+	menu := new(domain.Menu)
+
+	if err := repo.db.Where("id = ?", menu_id).First(&menu).Error; err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
 
