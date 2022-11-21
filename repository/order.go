@@ -13,6 +13,7 @@ type (
 		GetAllUserOrders(pageable util.Pageable, user_id string) (*util.Page, error)
 		GetAllOrders(pageable util.Pageable) (*util.Page, error)
 		UpdateOrderStatus(order *domain.OrderStatusPayload) *domain.Response
+		CreateOrder(order *domain.OrderPayload) *domain.Response
 	}
 
 	orderRepository struct {
@@ -85,10 +86,17 @@ func (repo *orderRepository) GetAllOrders(pageable util.Pageable) (*util.Page, e
 }
 
 func (repo *orderRepository) UpdateOrderStatus(order *domain.OrderStatusPayload) *domain.Response {
-
 	if err := repo.db.Table("orders").Where("id", order.Id).Updates(&order).Error; err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
 
 	return util.SetResponse(domain.ResponseOrderStatusUpdated, 0, nil)
+}
+
+func (repo *orderRepository) CreateOrder(order *domain.OrderPayload) *domain.Response {
+	if err := repo.db.Table("orders").Create(&order).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(domain.ResponseOrderCreated, 0, nil)
 }

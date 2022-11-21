@@ -19,6 +19,15 @@ type Order struct {
 	Payment     Payment      `gorm:"foreignKey:PaymentId;references:Id" json:"payment_detail"`
 }
 
+type OrderPayload struct {
+	UserId    string
+	CouponId  *string   `json:"coupon_id"`
+	Notes     *string   `json:"notes"`
+	PaymentId int       `json:"payment_id"`
+	Status    string    `json:"status"`
+	OrderDate time.Time `json:"order_date"`
+}
+
 type OrderStatusPayload struct {
 	Id     int    `gorm:"-" json:"id"`
 	Status string `gorm:"column:status" json:"status"`
@@ -30,6 +39,32 @@ func (o *OrderStatusPayload) Validate(c *gin.Context) error {
 	if err := c.ShouldBindJSON(o); err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func (o *OrderPayload) Validate(c *gin.Context) error {
+	if err := c.ShouldBindJSON(o); err != nil {
+		return err
+	}
+
+	if o.PaymentId <= 0 {
+		return ErrPaymentIdRequired
+	}
+
+	if o.Status == "" {
+		o.Status = DELIVERY_STATUS_IN_PROGRESS
+	}
+
+	if o.Status != DELIVERY_STATUS_IN_PROGRESS && o.Status != DELIVERY_STATUS_IN_TRANSIT && o.Status != DELIVERY_STATUS_RECEIVED {
+		return ErrInvalidStatus
+	}
+
+	if *o.CouponId == "" {
+		o.CouponId = nil
+	}
+
+	o.OrderDate = time.Now()
 
 	return nil
 }

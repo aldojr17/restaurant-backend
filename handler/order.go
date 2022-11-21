@@ -21,6 +21,7 @@ type (
 		GetAllUserOrders(c *gin.Context) *domain.Response
 		GetAllOrders(c *gin.Context) *domain.Response
 		UpdateOrderStatus(c *gin.Context) *domain.Response
+		CreateOrder(oc *gin.Context) *domain.Response
 	}
 )
 
@@ -29,6 +30,7 @@ func NewOrderHandler(app *initialize.Application) OrderHandler {
 		s: service.NewOrderService(
 			app.DB,
 			repository.NewOrderRepository(app.DB),
+			repository.NewCouponRepository(app.DB),
 		),
 	}
 }
@@ -88,6 +90,22 @@ func (h *orderHandler) UpdateOrderStatus(c *gin.Context) *domain.Response {
 	}
 
 	return h.s.UpdateOrderStatus(param)
+}
+
+func (h *orderHandler) CreateOrder(c *gin.Context) *domain.Response {
+	user_id, exists := c.Get(domain.USER_ID)
+	if !exists {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	param := new(domain.OrderPayload)
+	param.UserId = user_id.(string)
+
+	if err := param.Validate(c); err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, err)
+	}
+
+	return h.s.CreateOrder(param)
 }
 
 func newOrderPageableRequest(r *http.Request) *domain.PageableRequest {
