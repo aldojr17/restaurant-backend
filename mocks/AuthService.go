@@ -30,11 +30,11 @@ func (_m *AuthService) Login(payload *domain.AuthPayload) *domain.Response {
 }
 
 // Register provides a mock function with given fields: payload
-func (_m *AuthService) Register(payload *domain.AuthPayload) *domain.Response {
+func (_m *AuthService) Register(payload *domain.RegisterPayload) *domain.Response {
 	ret := _m.Called(payload)
 
 	var r0 *domain.Response
-	if rf, ok := ret.Get(0).(func(*domain.AuthPayload) *domain.Response); ok {
+	if rf, ok := ret.Get(0).(func(*domain.RegisterPayload) *domain.Response); ok {
 		r0 = rf(payload)
 	} else {
 		if ret.Get(0) != nil {

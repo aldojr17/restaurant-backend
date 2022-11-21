@@ -22,12 +22,14 @@ func TestNewAuthHandler(t *testing.T) {
 }
 
 func TestRegister(t *testing.T) {
-	payload := &domain.AuthPayload{
+	payload := &domain.RegisterPayload{
+		FullName: "test",
 		Email:    "test@test.com",
 		Password: "1234",
 	}
 
 	jsonBody := `{
+		"fullname":"test",
 		"email":"test@test.com",
 		"password":"1234"
 		}`
@@ -53,12 +55,14 @@ func TestRegister(t *testing.T) {
 }
 
 func TestRegisterError(t *testing.T) {
-	payload := &domain.AuthPayload{
+	payload := &domain.RegisterPayload{
+		FullName: "test",
 		Email:    "test@test",
 		Password: "1234",
 	}
 
 	jsonBody := `{
+		"fullname":"test",
 		"email":"test@test",
 		"password":"1234"
 		}`

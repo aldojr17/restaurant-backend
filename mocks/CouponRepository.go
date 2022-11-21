@@ -13,6 +13,38 @@ type CouponRepository struct {
 	mock.Mock
 }
 
+// CreateCoupon provides a mock function with given fields: coupon
+func (_m *CouponRepository) CreateCoupon(coupon *domain.Coupon) *domain.Response {
+	ret := _m.Called(coupon)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(*domain.Coupon) *domain.Response); ok {
+		r0 = rf(coupon)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
+// DeleteCoupon provides a mock function with given fields: id
+func (_m *CouponRepository) DeleteCoupon(id string) *domain.Response {
+	ret := _m.Called(id)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(string) *domain.Response); ok {
+		r0 = rf(id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 // GetCouponOwnedByUser provides a mock function with given fields: user_id
 func (_m *CouponRepository) GetCouponOwnedByUser(user_id string) *domain.Response {
 	ret := _m.Called(user_id)
