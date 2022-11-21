@@ -60,7 +60,7 @@ func (o *OrderPayload) Validate(c *gin.Context) error {
 		return ErrInvalidStatus
 	}
 
-	if *o.CouponId == "" {
+	if o.CouponId != nil && *o.CouponId == "" {
 		o.CouponId = nil
 	}
 
