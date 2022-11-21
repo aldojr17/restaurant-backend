@@ -1,6 +1,7 @@
 package service
 
 import (
+	"final-project-backend/domain"
 	"final-project-backend/repository"
 	"final-project-backend/util"
 
@@ -10,6 +11,9 @@ import (
 type (
 	MenuService interface {
 		GetAllMenus(pageable util.Pageable) (*util.Page, error)
+		CreateMenu(menu *domain.MenuPayload) *domain.Response
+		UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.Response
+		DeleteMenu(menu_id int) *domain.Response
 	}
 
 	menuService struct {
@@ -27,4 +31,16 @@ func NewMenuService(db *gorm.DB, menuRepo repository.MenuRepository) MenuService
 
 func (s *menuService) GetAllMenus(pageable util.Pageable) (*util.Page, error) {
 	return s.menuRepo.GetAllMenus(pageable)
+}
+
+func (s *menuService) CreateMenu(menu *domain.MenuPayload) *domain.Response {
+	return s.menuRepo.CreateMenu(menu)
+}
+
+func (s *menuService) UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.Response {
+	return s.menuRepo.UpdateMenu(menu, menu_id)
+}
+
+func (s *menuService) DeleteMenu(menu_id int) *domain.Response {
+	return s.menuRepo.DeleteMenu(menu_id)
 }

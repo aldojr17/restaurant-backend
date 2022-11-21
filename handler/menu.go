@@ -7,6 +7,7 @@ import (
 	"final-project-backend/service"
 	"final-project-backend/util"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,6 +19,9 @@ type (
 
 	MenuHandler interface {
 		GetAllMenus(c *gin.Context) *domain.Response
+		CreateMenu(c *gin.Context) *domain.Response
+		UpdateMenu(c *gin.Context) *domain.Response
+		DeleteMenu(c *gin.Context) *domain.Response
 	}
 )
 
@@ -37,6 +41,72 @@ func (h *menuHandler) GetAllMenus(c *gin.Context) *domain.Response {
 	}
 
 	return util.SetResponse(data, 0, nil)
+}
+
+func (h *menuHandler) CreateMenu(c *gin.Context) *domain.Response {
+	role_id, exists := c.Get(domain.ROLE_ID)
+	if !exists {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	if role_id.(int) != 0 {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	param := new(domain.MenuPayload)
+
+	if err := param.Validate(c); err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, err)
+	}
+
+	return h.s.CreateMenu(param)
+}
+
+func (h *menuHandler) UpdateMenu(c *gin.Context) *domain.Response {
+	role_id, exists := c.Get(domain.ROLE_ID)
+	if !exists {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	if role_id.(int) != 0 {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	param := new(domain.MenuPayload)
+	var menu_id int
+
+	if id, err := strconv.Atoi(c.Param("id")); err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, domain.ErrMenuIdRequired)
+	} else {
+		menu_id = id
+	}
+
+	if err := param.Validate(c); err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, err)
+	}
+
+	return h.s.UpdateMenu(param, menu_id)
+}
+
+func (h *menuHandler) DeleteMenu(c *gin.Context) *domain.Response {
+	role_id, exists := c.Get(domain.ROLE_ID)
+	if !exists {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	if role_id.(int) != 0 {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	var menu_id int
+
+	if id, err := strconv.Atoi(c.Param("id")); err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, domain.ErrMenuIdRequired)
+	} else {
+		menu_id = id
+	}
+
+	return h.s.DeleteMenu(menu_id)
 }
 
 func newMenuPageableRequest(r *http.Request) *domain.PageableRequest {

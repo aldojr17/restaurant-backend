@@ -3,13 +3,18 @@ package repository
 import (
 	"final-project-backend/domain"
 	"final-project-backend/util"
+	"net/http"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type (
 	MenuRepository interface {
 		GetAllMenus(pageable util.Pageable) (*util.Page, error)
+		CreateMenu(menu *domain.MenuPayload) *domain.Response
+		UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.Response
+		DeleteMenu(menu_id int) *domain.Response
 	}
 
 	menuRepository struct {
@@ -52,4 +57,30 @@ func (repo *menuRepository) GetAllMenus(pageable util.Pageable) (*util.Page, err
 	}
 
 	return paginator.Pageable(menus), nil
+}
+
+func (repo *menuRepository) CreateMenu(menu *domain.MenuPayload) *domain.Response {
+	if err := repo.db.Table("menus").Create(&menu).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(menu, 0, nil)
+}
+
+func (repo *menuRepository) UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.Response {
+	if err := repo.db.Table("menus").Where("id = ?", menu_id).Updates(&menu).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(menu, 0, nil)
+}
+
+func (repo *menuRepository) DeleteMenu(menu_id int) *domain.Response {
+	menu := new(domain.Menu)
+
+	if err := repo.db.Clauses(clause.Returning{}).Delete(menu, menu_id).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(menu, 0, nil)
 }
