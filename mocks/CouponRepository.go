@@ -61,6 +61,22 @@ func (_m *CouponRepository) GetCouponOwnedByUser(user_id string) *domain.Respons
 	return r0
 }
 
+// GetValidCoupon provides a mock function with given fields: user_id, coupon_id
+func (_m *CouponRepository) GetValidCoupon(user_id string, coupon_id string) *domain.Response {
+	ret := _m.Called(user_id, coupon_id)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(string, string) *domain.Response); ok {
+		r0 = rf(user_id, coupon_id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 type mockConstructorTestingTNewCouponRepository interface {
 	mock.TestingT
 	Cleanup(func())

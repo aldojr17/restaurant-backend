@@ -102,6 +102,22 @@ func (_m *MenuRepository) UpdateMenu(menu *domain.MenuPayload, menu_id int) *dom
 	return r0
 }
 
+// UpdateMenuRating provides a mock function with given fields: menu_id, rating
+func (_m *MenuRepository) UpdateMenuRating(menu_id int, rating float32) *domain.Response {
+	ret := _m.Called(menu_id, rating)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(int, float32) *domain.Response); ok {
+		r0 = rf(menu_id, rating)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 type mockConstructorTestingTNewMenuRepository interface {
 	mock.TestingT
 	Cleanup(func())
