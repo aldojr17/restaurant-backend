@@ -16,6 +16,7 @@ type (
 		UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.Response
 		DeleteMenu(menu_id int) *domain.Response
 		GetMenu(menu_id int) *domain.Response
+		UpdateMenuRating(menu_id int, rating float32) *domain.Response
 	}
 
 	menuRepository struct {
@@ -94,4 +95,15 @@ func (repo *menuRepository) GetMenu(menu_id int) *domain.Response {
 	}
 
 	return util.SetResponse(menu, 0, nil)
+}
+
+func (repo *menuRepository) UpdateMenuRating(menu_id int, rating float32) *domain.Response {
+	if err := repo.db.Model(&domain.Menu{}).Where("id = ?", menu_id).UpdateColumns(map[string]interface{}{
+		"rating":       gorm.Expr("(rating + ?) / (total_review + 1)", rating),
+		"total_review": gorm.Expr("total_review + 1"),
+	}).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(domain.ResponseMenuUpdated, 0, nil)
 }

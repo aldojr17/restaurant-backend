@@ -30,6 +30,7 @@ const (
 	ResponseUserCreated        = "User Created."
 	ResponseReviewAdded        = "Review Added."
 	ResponseReviewUpdated      = "Review Updated."
+	ResponseMenuUpdated        = "Menu Updated."
 	ResponseAddedToFavorite    = "Menu added to favorite."
 	ResponseOrderCreated       = "Order Created."
 	ResponseOrderStatusUpdated = "Order Status Updated."

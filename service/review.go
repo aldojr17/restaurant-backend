@@ -39,5 +39,15 @@ func (s *reviewService) AddReview(payload *domain.Review) *domain.Response {
 		return s.repo.UpdateReview(payload)
 	}
 
-	return s.repo.AddReview(payload)
+	if response := s.repo.AddReview(payload); response.Err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+	}
+
+	response := s.menuRepo.UpdateMenuRating(payload.MenuId, payload.Rating)
+
+	if response.Err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+	}
+
+	return response
 }
