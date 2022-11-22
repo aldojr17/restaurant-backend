@@ -10,6 +10,8 @@ import (
 const (
 	SEARCH_BY_NAME = "name"
 
+	FILTER_BY_CATEGORY = "category"
+
 	DEFAULT_SORT_BY       = "name"
 	DEFAULT_SORT_BY_ORDER = "order_date"
 )

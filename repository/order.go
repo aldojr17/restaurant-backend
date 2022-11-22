@@ -31,9 +31,13 @@ func (repo *orderRepository) GetAllUserOrders(pageable util.Pageable, user_id st
 	var count int64
 	arguments := []interface{}{
 		pageable.SearchParams()[util.SEARCH_BY_NAME],
+		pageable.FilterParams()[util.FILTER_BY_CATEGORY],
 	}
 
-	if err := repo.db.Model(domain.Order{}).Where("user_id = ?", user_id).Count(&count).Error; err != nil {
+	if err := repo.db.Model(domain.Order{}).Joins("left join menu_options on menu_options.order_id  = orders.id").
+		Joins("left join menus on menus.id  = menu_options.menu_id").
+		Joins("left join categories on categories.id  = menus.category_id").
+		Where("menus.name ILIKE ?", arguments[0]).Where("user_id = ?", user_id).Count(&count).Error; err != nil {
 		return util.NewPaginator(pageable.GetPage(), pageable.GetLimit(), 0).
 			Pageable(domain.Orders{}), err
 	}
@@ -47,8 +51,23 @@ func (repo *orderRepository) GetAllUserOrders(pageable util.Pageable, user_id st
 	arguments = append(arguments, pageable.SortBy(), paginator.PerPageNums, paginator.Offset())
 
 	var orders domain.Orders
+	var err error
 
-	if err := repo.db.Preload("Payment").Preload("MenuOptions.MenuDetail.Category").Where("user_id = ?", user_id).Order(arguments[1]).Limit(arguments[2].(int)).Offset(arguments[3].(int)).Find(&orders).Error; err != nil {
+	if arguments[1] != nil {
+		err = repo.db.Preload("Payment").Preload("MenuOptions.MenuDetail.Category").
+			Joins("left join menu_options on menu_options.order_id  = orders.id").
+			Joins("left join menus on menus.id  = menu_options.menu_id").
+			Joins("left join categories on categories.id  = menus.category_id").
+			Where("menus.name ILIKE ?", arguments[0]).Where("menus.category_id = ?", arguments[1]).Where("user_id = ?", user_id).Order(arguments[2]).Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&orders).Error
+	} else {
+		err = repo.db.Preload("Payment").Preload("MenuOptions.MenuDetail.Category").
+			Joins("left join menu_options on menu_options.order_id  = orders.id").
+			Joins("left join menus on menus.id  = menu_options.menu_id").
+			Joins("left join categories on categories.id  = menus.category_id").
+			Where("menus.name ILIKE ?", arguments[0]).Where("user_id = ?", user_id).Order(arguments[2]).Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&orders).Error
+	}
+
+	if err != nil {
 		return util.NewPaginator(pageable.GetPage(), pageable.GetLimit(), 0).
 			Pageable(domain.Orders{}), err
 	}
