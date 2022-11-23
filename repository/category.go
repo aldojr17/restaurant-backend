@@ -27,7 +27,7 @@ func NewCategoryRepository(db *gorm.DB) CategoryRepository {
 func (repo *categoryRepository) GetAllCategory() *domain.Response {
 	categories := new(domain.Categories)
 
-	if err := repo.db.Model(&domain.Category{}).Preload("Menus.Category").Find(&categories).Error; err != nil {
+	if err := repo.db.Model(&domain.Category{}).Find(&categories).Error; err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
 

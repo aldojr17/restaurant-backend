@@ -12,4 +12,5 @@ func Routes(router *gin.Engine, app *initialize.Application) {
 	MenuRoutes(router, app)
 	AdminRoutes(router, app)
 	OrderRoutes(router, app)
+	CategoryRoutes(router, app)
 }

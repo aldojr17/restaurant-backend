@@ -13,7 +13,7 @@ import (
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if strings.Contains(ctx.FullPath(), "docs") || strings.Contains(ctx.FullPath(), "login") || strings.Contains(ctx.FullPath(), "register") || (strings.Contains(ctx.FullPath(), "menus") && ctx.Request.Method == "GET") {
+		if strings.Contains(ctx.FullPath(), "docs") || strings.Contains(ctx.FullPath(), "login") || strings.Contains(ctx.FullPath(), "register") || (strings.Contains(ctx.FullPath(), "menus") && ctx.Request.Method == "GET") || strings.Contains(ctx.FullPath(), "categories") {
 			ctx.Next()
 			return
 		}
