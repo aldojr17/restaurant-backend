@@ -5,6 +5,7 @@ import (
 	"final-project-backend/repository"
 	"final-project-backend/util"
 	"final-project-backend/util/jwt"
+	"fmt"
 	"net/http"
 
 	"gorm.io/gorm"
@@ -63,8 +64,18 @@ func (s *authService) Login(payload *domain.AuthPayload) *domain.Response {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
 
+	fmt.Println("test")
 	tokenResponse := domain.LoginResponse{
 		Token: signedToken,
+		User: domain.UserResponse{
+			Id:             user.Id,
+			Email:          user.Email,
+			Address:        user.Address,
+			FullName:       user.FullName,
+			Phone:          user.Phone,
+			ProfilePicture: user.ProfilePicture,
+			Role:           user.Role,
+		},
 	}
 
 	return util.SetResponse(tokenResponse, 0, nil)

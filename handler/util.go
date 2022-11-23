@@ -61,6 +61,7 @@ func TokenSuccessResponse(c *gin.Context, data domain.LoginResponse) {
 		"isSuccess": true,
 		"token":     data.Token,
 		"error":     nil,
+		"user":      data.User,
 	}
 	c.JSON(http.StatusOK, result)
 }
