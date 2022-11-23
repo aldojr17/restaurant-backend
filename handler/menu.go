@@ -122,8 +122,10 @@ func newMenuPageableRequest(r *http.Request) *domain.PageableRequest {
 
 	p.Desceding = util.SortDirectionFromQueryParam(r)
 	p.Search = map[string]interface{}{}
+	p.Filters = map[string]interface{}{}
 
 	p.Search[util.SEARCH_BY_NAME] = queryLikeParamOrNull(r, util.SEARCH_BY_NAME)
+	p.Filters[util.FILTER_BY_CATEGORY] = queryParamOrNull(r, util.FILTER_BY_CATEGORY)
 
 	return p
 }

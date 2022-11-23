@@ -32,12 +32,22 @@ func NewMenuRepository(db *gorm.DB) MenuRepository {
 
 func (repo *menuRepository) GetAllMenus(pageable util.Pageable) (*util.Page, error) {
 	var count int64
+	var err error
 	arguments := []interface{}{
 		pageable.SearchParams()[util.SEARCH_BY_NAME],
+		pageable.FilterParams()[util.FILTER_BY_CATEGORY],
 	}
 
-	if err := repo.db.Model(domain.Menu{}).Where("name ILIKE ?", arguments[0].(string)).
-		Count(&count).Error; err != nil {
+	if arguments[1] != nil {
+		err = repo.db.Model(domain.Menu{}).Where("name ILIKE ?", arguments[0].(string)).
+			Where("category_id = ?", arguments[1]).
+			Count(&count).Error
+	} else {
+		err = repo.db.Model(domain.Menu{}).Where("name ILIKE ?", arguments[0].(string)).
+			Count(&count).Error
+	}
+
+	if err != nil {
 		return util.NewPaginator(pageable.GetPage(), pageable.GetLimit(), 0).
 			Pageable(domain.Menus{}), err
 	}
@@ -52,8 +62,17 @@ func (repo *menuRepository) GetAllMenus(pageable util.Pageable) (*util.Page, err
 
 	var menus domain.Menus
 
-	if err := repo.db.Preload("Category").Where("name ILIKE ?", arguments[0].(string)).Order(arguments[1]).
-		Limit(arguments[2].(int)).Offset(arguments[3].(int)).Find(&menus).Error; err != nil {
+	if arguments[1] != nil {
+		err = repo.db.Preload("Category").
+			Where("name ILIKE ?", arguments[0].(string)).Where("category_id = ?", arguments[1]).Order(arguments[2]).
+			Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&menus).Error
+	} else {
+		err = repo.db.Preload("Category").
+			Where("name ILIKE ?", arguments[0].(string)).Order(arguments[2]).
+			Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&menus).Error
+	}
+
+	if err != nil {
 		return util.NewPaginator(pageable.GetPage(), pageable.GetLimit(), 0).
 			Pageable(domain.Menus{}), err
 	}
