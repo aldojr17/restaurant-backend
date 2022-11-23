@@ -38,7 +38,7 @@ func (repo *menuRepository) GetAllMenus(pageable util.Pageable) (*util.Page, err
 		pageable.FilterParams()[util.FILTER_BY_CATEGORY],
 	}
 
-	if arguments[1] != nil {
+	if arguments[1] != nil && arguments[1] != "0" {
 		err = repo.db.Model(domain.Menu{}).Where("name ILIKE ?", arguments[0].(string)).
 			Where("category_id = ?", arguments[1]).
 			Count(&count).Error
@@ -62,7 +62,7 @@ func (repo *menuRepository) GetAllMenus(pageable util.Pageable) (*util.Page, err
 
 	var menus domain.Menus
 
-	if arguments[1] != nil {
+	if arguments[1] != nil && arguments[1] != "0" {
 		err = repo.db.Preload("Category").
 			Where("name ILIKE ?", arguments[0].(string)).Where("category_id = ?", arguments[1]).Order(arguments[2]).
 			Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&menus).Error

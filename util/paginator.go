@@ -86,7 +86,7 @@ func NewPaginator(currentPage, limit, nums int) *Paginator {
 
 	p.page = currentPage
 	if limit <= 0 {
-		limit = 10
+		limit = 12
 	}
 
 	p.PerPageNums = limit
@@ -108,10 +108,10 @@ func PageFromQueryParam(r *http.Request) int {
 
 func LimitFromQueryParam(r *http.Request) int {
 	if limit, e := strconv.Atoi(r.FormValue("limit")); e != nil {
-		return 10
+		return 12
 	} else {
 		if limit <= 0 {
-			limit = 10
+			limit = 12
 		}
 		return limit
 	}
