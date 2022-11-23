@@ -12,7 +12,7 @@ const (
 
 	FILTER_BY_CATEGORY = "category"
 
-	DEFAULT_SORT_BY       = "name"
+	DEFAULT_SORT_BY       = "rating"
 	DEFAULT_SORT_BY_ORDER = "order_date"
 )
 
@@ -86,7 +86,7 @@ func NewPaginator(currentPage, limit, nums int) *Paginator {
 
 	p.page = currentPage
 	if limit <= 0 {
-		limit = 12
+		limit = 10
 	}
 
 	p.PerPageNums = limit
@@ -108,10 +108,10 @@ func PageFromQueryParam(r *http.Request) int {
 
 func LimitFromQueryParam(r *http.Request) int {
 	if limit, e := strconv.Atoi(r.FormValue("limit")); e != nil {
-		return 12
+		return 10
 	} else {
 		if limit <= 0 {
-			limit = 12
+			limit = 10
 		}
 		return limit
 	}

@@ -46,8 +46,8 @@ func (p *PageableRequest) SortBy() string {
 	}
 
 	if p.Desceding == "asc" {
-		return fmt.Sprintf("%s %s", p.Sort_by, "ASC")
+		return fmt.Sprintf("%s %s", strings.ToLower(p.Sort_by), "ASC")
 	}
 
-	return fmt.Sprintf("%s %s", p.Sort_by, "DESC")
+	return fmt.Sprintf("%s %s", strings.ToLower(p.Sort_by), "DESC")
 }
