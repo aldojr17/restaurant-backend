@@ -20,6 +20,7 @@ type Menu struct {
 	UpdatedAt   time.Time      `gorm:"column:updated_at" json:"updated_at"`
 	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 	Category    Category       `gorm:"foreignKey:CategoryId;references:Id" json:"category"`
+	MenuOption  []MenuOption   `gorm:"foreignKey:MenuId;references:Id" json:"menu_option"`
 }
 
 type MenuPayload struct {
@@ -32,11 +33,10 @@ type MenuPayload struct {
 }
 
 type MenuOption struct {
-	MenuId     int    `gorm:"primaryKey;column:menu_id" json:"menu_id"`
-	OrderId    int    `gorm:"primaryKey;column:order_id" json:"order_id"`
-	Qty        int    `gorm:"qty" json:"qty"`
-	Options    string `gorm:"options" json:"options"`
-	MenuDetail Menu   `gorm:"foreignKey:MenuId;references:Id" json:"menu_detail"`
+	Id     int    `gorm:"primaryKey;column:id" json:"id"`
+	MenuId int    `gorm:"column:menu_id" json:"menu_id"`
+	Name   string `gorm:"name" json:"name"`
+	Price  int    `gorm:"price" json:"price"`
 }
 
 type Menus []Menu
