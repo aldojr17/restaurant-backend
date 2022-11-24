@@ -34,8 +34,8 @@ func (repo *orderRepository) GetAllUserOrders(pageable util.Pageable, user_id st
 		pageable.FilterParams()[util.FILTER_BY_CATEGORY],
 	}
 
-	if err := repo.db.Model(domain.Order{}).Joins("left join menu_options on menu_options.order_id  = orders.id").
-		Joins("left join menus on menus.id  = menu_options.menu_id").
+	if err := repo.db.Model(domain.Order{}).Joins("left join order_details on order_details.order_id  = orders.id").
+		Joins("left join menus on menus.id  = order_details.menu_id").
 		Joins("left join categories on categories.id  = menus.category_id").
 		Group("orders.id").
 		Where("COALESCE(menus.name, '') ILIKE ?", arguments[0]).Where("user_id = ?", user_id).Count(&count).Error; err != nil {
@@ -55,16 +55,16 @@ func (repo *orderRepository) GetAllUserOrders(pageable util.Pageable, user_id st
 	var err error
 
 	if arguments[1] != nil {
-		err = repo.db.Preload("Payment").Preload("MenuOptions.MenuDetail.Category").
-			Joins("left join menu_options on menu_options.order_id  = orders.id").
-			Joins("left join menus on menus.id  = menu_options.menu_id").
+		err = repo.db.Preload("Payment").Preload("OrderDetails.MenuDetail.Category").
+			Joins("left join order_details on order_details.order_id  = orders.id").
+			Joins("left join menus on menus.id  = order_details.menu_id").
 			Joins("left join categories on categories.id  = menus.category_id").
 			Group("orders.id").
 			Where("COALESCE(menus.name, '') ILIKE ?", arguments[0]).Where("menus.category_id = ?", arguments[1]).Where("user_id = ?", user_id).Order(arguments[2]).Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&orders).Error
 	} else {
-		err = repo.db.Preload("Payment").Preload("MenuOptions.MenuDetail.Category").
-			Joins("left join menu_options on menu_options.order_id  = orders.id").
-			Joins("left join menus on menus.id  = menu_options.menu_id").
+		err = repo.db.Preload("Payment").Preload("OrderDetails.MenuDetail.Category").
+			Joins("left join order_details on order_details.order_id  = orders.id").
+			Joins("left join menus on menus.id  = order_details.menu_id").
 			Joins("left join categories on categories.id  = menus.category_id").
 			Group("orders.id").
 			Where("COALESCE(menus.name, '') ILIKE ?", arguments[0]).Where("user_id = ?", user_id).Order(arguments[2]).Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&orders).Error
@@ -99,7 +99,7 @@ func (repo *orderRepository) GetAllOrders(pageable util.Pageable) (*util.Page, e
 
 	var orders domain.Orders
 
-	if err := repo.db.Preload("Payment").Preload("MenuOptions.MenuDetail.Category").Order(arguments[1]).Limit(arguments[2].(int)).Offset(arguments[3].(int)).Find(&orders).Error; err != nil {
+	if err := repo.db.Preload("Payment").Preload("OrderDetails.MenuDetail.Category").Order(arguments[1]).Limit(arguments[2].(int)).Offset(arguments[3].(int)).Find(&orders).Error; err != nil {
 		return util.NewPaginator(pageable.GetPage(), pageable.GetLimit(), 0).
 			Pageable(domain.Orders{}), err
 	}
