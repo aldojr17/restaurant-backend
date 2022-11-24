@@ -22,6 +22,7 @@ type (
 		CreateMenu(c *gin.Context) *domain.Response
 		UpdateMenu(c *gin.Context) *domain.Response
 		DeleteMenu(c *gin.Context) *domain.Response
+		GetMenuDetail(c *gin.Context) *domain.Response
 	}
 )
 
@@ -107,6 +108,18 @@ func (h *menuHandler) DeleteMenu(c *gin.Context) *domain.Response {
 	}
 
 	return h.s.DeleteMenu(menu_id)
+}
+
+func (h *menuHandler) GetMenuDetail(c *gin.Context) *domain.Response {
+	var menu_id int
+
+	if id, err := strconv.Atoi(c.Param("id")); err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, domain.ErrMenuIdRequired)
+	} else {
+		menu_id = id
+	}
+
+	return h.s.GetMenuDetail(menu_id)
 }
 
 func newMenuPageableRequest(r *http.Request) *domain.PageableRequest {

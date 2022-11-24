@@ -14,6 +14,7 @@ type (
 		CreateMenu(menu *domain.MenuPayload) *domain.Response
 		UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.Response
 		DeleteMenu(menu_id int) *domain.Response
+		GetMenuDetail(menu_id int) *domain.Response
 	}
 
 	menuService struct {
@@ -43,4 +44,8 @@ func (s *menuService) UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.
 
 func (s *menuService) DeleteMenu(menu_id int) *domain.Response {
 	return s.menuRepo.DeleteMenu(menu_id)
+}
+
+func (s *menuService) GetMenuDetail(menu_id int) *domain.Response {
+	return s.menuRepo.GetMenu(menu_id)
 }

@@ -109,8 +109,8 @@ func (repo *menuRepository) DeleteMenu(menu_id int) *domain.Response {
 func (repo *menuRepository) GetMenu(menu_id int) *domain.Response {
 	menu := new(domain.Menu)
 
-	if err := repo.db.Where("id = ?", menu_id).First(&menu).Error; err != nil {
-		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	if err := repo.db.Preload("Category").Preload("MenuOption").Where("id = ?", menu_id).First(&menu).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, domain.ErrMenuNotFound)
 	}
 
 	return util.SetResponse(menu, 0, nil)

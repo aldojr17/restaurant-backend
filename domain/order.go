@@ -34,11 +34,11 @@ type OrderStatusPayload struct {
 }
 
 type OrderDetail struct {
-	MenuId     int    `gorm:"primaryKey;column:menu_id" json:"menu_id"`
-	OrderId    int    `gorm:"primaryKey;column:order_id" json:"order_id"`
-	Qty        int    `gorm:"qty" json:"qty"`
-	Options    string `gorm:"options" json:"options"`
-	MenuDetail Menu   `gorm:"foreignKey:MenuId;references:Id" json:"menu_detail"`
+	MenuId     int  `gorm:"primaryKey;column:menu_id" json:"menu_id"`
+	OrderId    int  `gorm:"primaryKey;column:order_id" json:"order_id"`
+	Qty        int  `gorm:"qty" json:"qty"`
+	Options    int  `gorm:"options" json:"options"`
+	MenuDetail Menu `gorm:"foreignKey:MenuId;references:Id" json:"menu_detail"`
 }
 
 type Orders []Order
