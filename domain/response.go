@@ -14,13 +14,14 @@ type LoginResponse struct {
 }
 
 type UserResponse struct {
-	Id             string    `json:"id"`
-	Email          string    `json:"email"`
-	Address        *string   `json:"address"`
-	FullName       string    `json:"full_name"`
-	Phone          *string   `json:"phone"`
-	ProfilePicture *string   `json:"profile_picture"`
-	Role           int       `json:"role"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
+	Id             string         `json:"id"`
+	Email          string         `json:"email"`
+	Address        *string        `json:"address"`
+	FullName       string         `json:"full_name"`
+	Phone          *string        `json:"phone"`
+	ProfilePicture *string        `json:"profile_picture"`
+	Role           int            `json:"role"`
+	CreatedAt      time.Time      `json:"created_at"`
+	UpdatedAt      time.Time      `json:"updated_at"`
+	Favorites      []UserFavorite `gorm:"foreignKey:UserId;references:Id" json:"favorites"`
 }

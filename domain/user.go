@@ -7,16 +7,17 @@ import (
 )
 
 type User struct {
-	Id             string    `gorm:"primaryKey;column:id"`
-	Email          string    `gorm:"column:email"`
-	Password       string    `gorm:"column:password"`
-	Address        *string   `gorm:"column:address"`
-	FullName       string    `gorm:"column:full_name"`
-	Phone          *string   `gorm:"column:phone"`
-	ProfilePicture *string   `gorm:"column:profile_picture"`
-	Role           int       `gorm:"column:role"`
-	CreatedAt      time.Time `gorm:"column:created_at"`
-	UpdatedAt      time.Time `gorm:"column:updated_at"`
+	Id             string         `gorm:"primaryKey;column:id"`
+	Email          string         `gorm:"column:email"`
+	Password       string         `gorm:"column:password"`
+	Address        *string        `gorm:"column:address"`
+	FullName       string         `gorm:"column:full_name"`
+	Phone          *string        `gorm:"column:phone"`
+	ProfilePicture *string        `gorm:"column:profile_picture"`
+	Role           int            `gorm:"column:role"`
+	CreatedAt      time.Time      `gorm:"column:created_at"`
+	UpdatedAt      time.Time      `gorm:"column:updated_at"`
+	Favorites      []UserFavorite `gorm:"foreignKey:UserId;references:Id" json:"favorites"`
 }
 
 type UserProfile struct {
@@ -28,7 +29,7 @@ type UserProfile struct {
 }
 
 type UserFavorite struct {
-	UserId string `gorm:"column:user_id"`
+	UserId string `gorm:"column:user_id" json:"user_id"`
 	MenuId int    `gorm:"column:menu_id" json:"menu_id"`
 }
 

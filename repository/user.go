@@ -34,7 +34,7 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 func (repo *userRepository) GetUserById(id string) *domain.Response {
 	user := new(domain.UserResponse)
 
-	if err := repo.db.Table("users").Where("id", id).First(&user).Error; err != nil {
+	if err := repo.db.Preload("Favorites").Table("users").Where("id", id).First(&user).Error; err != nil {
 		return util.SetResponse(nil, http.StatusBadRequest, err)
 	}
 
@@ -44,7 +44,7 @@ func (repo *userRepository) GetUserById(id string) *domain.Response {
 func (repo *userRepository) GetUserByEmail(email string) *domain.Response {
 	user := new(domain.User)
 
-	if err := repo.db.Where("email = ?", email).First(&user).Error; err != nil {
+	if err := repo.db.Preload("Favorites").Where("email = ?", email).First(&user).Error; err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
 
