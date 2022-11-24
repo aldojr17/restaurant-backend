@@ -22,6 +22,7 @@ type (
 		GetAllOrders(c *gin.Context) *domain.Response
 		UpdateOrderStatus(c *gin.Context) *domain.Response
 		CreateOrder(oc *gin.Context) *domain.Response
+		CreateOrderDetails(c *gin.Context) *domain.Response
 	}
 )
 
@@ -106,6 +107,21 @@ func (h *orderHandler) CreateOrder(c *gin.Context) *domain.Response {
 	}
 
 	return h.s.CreateOrder(param)
+}
+
+func (h *orderHandler) CreateOrderDetails(c *gin.Context) *domain.Response {
+	_, exists := c.Get(domain.USER_ID)
+	if !exists {
+		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+	}
+
+	param := new(domain.OrderDetails)
+
+	if err := param.Validate(c); err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, err)
+	}
+
+	return h.s.CreateOrderDetails(param)
 }
 
 func newOrderPageableRequest(r *http.Request) *domain.PageableRequest {

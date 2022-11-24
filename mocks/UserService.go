@@ -13,8 +13,8 @@ type UserService struct {
 	mock.Mock
 }
 
-// AddMenuFavorite provides a mock function with given fields: payload
-func (_m *UserService) AddMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+// AddOrDeleteMenuFavorite provides a mock function with given fields: payload
+func (_m *UserService) AddOrDeleteMenuFavorite(payload *domain.UserFavorite) *domain.Response {
 	ret := _m.Called(payload)
 
 	var r0 *domain.Response

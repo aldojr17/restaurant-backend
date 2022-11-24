@@ -34,11 +34,23 @@ type OrderStatusPayload struct {
 }
 
 type OrderDetail struct {
-	MenuId     int  `gorm:"primaryKey;column:menu_id" json:"menu_id"`
-	OrderId    int  `gorm:"primaryKey;column:order_id" json:"order_id"`
+	Id         int  `gorm:"primaryKey;column:id" json:"id"`
+	MenuId     int  `gorm:"column:menu_id" json:"menu_id"`
+	OrderId    int  `gorm:"column:order_id" json:"order_id"`
 	Qty        int  `gorm:"qty" json:"qty"`
-	Options    int  `gorm:"options" json:"options"`
+	OptionId   int  `gorm:"option_id" json:"option_id"`
 	MenuDetail Menu `gorm:"foreignKey:MenuId;references:Id" json:"menu_detail"`
+}
+
+type OrderDetailPayload struct {
+	MenuId   int  `json:"menu_id"`
+	OrderId  int  `json:"order_id"`
+	Qty      int  `json:"qty"`
+	OptionId *int `json:"option_id"`
+}
+
+type OrderDetails struct {
+	Orders []OrderDetailPayload `json:"orders"`
 }
 
 type Orders []Order
@@ -46,6 +58,40 @@ type Orders []Order
 func (o *OrderStatusPayload) Validate(c *gin.Context) error {
 	if err := c.ShouldBindJSON(o); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (o *OrderDetailPayload) Validate(c *gin.Context) error {
+	if o.MenuId == 0 {
+		return ErrMenuIdRequired
+	}
+
+	if o.OrderId == 0 {
+		return ErrOrderIdRequired
+	}
+
+	if o.Qty == 0 {
+		return ErrQtyRequired
+	}
+
+	return nil
+}
+
+func (o *OrderDetails) Validate(c *gin.Context) error {
+	if err := c.ShouldBindJSON(o); err != nil {
+		return err
+	}
+
+	if len(o.Orders) == 0 {
+		return ErrOrdersRequired
+	}
+
+	for _, order := range o.Orders {
+		if err := order.Validate(c); err != nil {
+			return err
+		}
 	}
 
 	return nil

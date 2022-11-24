@@ -11,6 +11,9 @@ var (
 	ErrFullNameRequired  = errors.New("fullname is required")
 	ErrMenuIdRequired    = errors.New("menu id is required")
 	ErrPaymentIdRequired = errors.New("payment id is required")
+	ErrOrdersRequired    = errors.New("orders is required")
+	ErrOrderIdRequired   = errors.New("order id is required")
+	ErrQtyRequired       = errors.New("qty is required")
 
 	ErrIncorrectEmailFormat = errors.New("invalid email format")
 	ErrWrongLoginCredential = errors.New("wrong email or password")
@@ -35,6 +38,7 @@ const (
 	ResponseAddedToFavorite     = "Menu added to favorite."
 	ResponseDeletedFromFavorite = "Menu deleted from favorite."
 	ResponseOrderCreated        = "Order Created."
+	ResponseOrderDetailsCreated = "Order Details Created."
 	ResponseOrderStatusUpdated  = "Order Status Updated."
 	ResponseCouponCreated       = "Coupon Created."
 
