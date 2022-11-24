@@ -14,7 +14,7 @@ type (
 		GetCoupons(user_id string) *domain.Response
 		GetProfile(user_id string) *domain.Response
 
-		AddMenuFavorite(payload *domain.UserFavorite) *domain.Response
+		AddOrDeleteMenuFavorite(payload *domain.UserFavorite) *domain.Response
 
 		UpdateUserData(payload *domain.UserProfile) *domain.Response
 	}
@@ -55,10 +55,14 @@ func (s *userService) GetProfile(user_id string) *domain.Response {
 	return s.userRepo.GetUserById(user_id)
 }
 
-func (s *userService) AddMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+func (s *userService) AddOrDeleteMenuFavorite(payload *domain.UserFavorite) *domain.Response {
 	if response := s.menuRepo.GetMenu(payload.MenuId); response.Err != nil {
 		return util.SetResponse(nil, http.StatusBadRequest, domain.ErrMenuNotFound)
 	}
 
-	return s.userRepo.AddMenuFavorite(payload)
+	if response := s.userRepo.GetMenuFavorite(payload); response.Err != nil {
+		return s.userRepo.AddMenuFavorite(payload)
+	} else {
+		return s.userRepo.DeleteMenuFavorite(payload)
+	}
 }

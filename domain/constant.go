@@ -17,6 +17,7 @@ var (
 	ErrEmailAlreadyExists   = errors.New("email already exists")
 	ErrMenuAlreadyAdded     = errors.New("menu already added to favorite")
 	ErrMenuNotFound         = errors.New("menu not found")
+	ErrFavoriteMenuNotFound = errors.New("favorite menu not found")
 	ErrCouponInvalid        = errors.New("coupon invalid")
 	ErrRatingMinMax         = errors.New("rating min 0 and max 5")
 	ErrInvalidStatus        = errors.New("invalid order status (In Progress, In Transit, Received)")
@@ -26,15 +27,16 @@ const (
 	USER_ID = "user_id"
 	ROLE_ID = "role_id"
 
-	ResponseUserRegistered     = "User Registered."
-	ResponseUserCreated        = "User Created."
-	ResponseReviewAdded        = "Review Added."
-	ResponseReviewUpdated      = "Review Updated."
-	ResponseMenuUpdated        = "Menu Updated."
-	ResponseAddedToFavorite    = "Menu added to favorite."
-	ResponseOrderCreated       = "Order Created."
-	ResponseOrderStatusUpdated = "Order Status Updated."
-	ResponseCouponCreated      = "Coupon Created."
+	ResponseUserRegistered      = "User Registered."
+	ResponseUserCreated         = "User Created."
+	ResponseReviewAdded         = "Review Added."
+	ResponseReviewUpdated       = "Review Updated."
+	ResponseMenuUpdated         = "Menu Updated."
+	ResponseAddedToFavorite     = "Menu added to favorite."
+	ResponseDeletedFromFavorite = "Menu deleted from favorite."
+	ResponseOrderCreated        = "Order Created."
+	ResponseOrderStatusUpdated  = "Order Status Updated."
+	ResponseCouponCreated       = "Coupon Created."
 
 	DELIVERY_STATUS_IN_PROGRESS = "In Progress"
 	DELIVERY_STATUS_IN_TRANSIT  = "In Transit"

@@ -17,7 +17,7 @@ func UserRoutes(router *gin.Engine, app *initialize.Application) {
 		users.PUT("/change-profile", handler.GinHandlerWrapper(userHandler.UpdateUserData))
 		users.GET("/coupons", handler.GinHandlerWrapper(userHandler.GetCoupons))
 		users.GET("/profile", handler.GinHandlerWrapper(userHandler.GetProfile))
-		users.POST("/favorites", handler.GinHandlerWrapper(userHandler.AddMenuFavorite))
+		users.POST("/favorites", handler.GinHandlerWrapper(userHandler.AddOrDeleteMenuFavorite))
 		users.GET("/orders", handler.GinHandlerWrapper(orderHandler.GetAllUserOrders))
 		users.POST("/reviews", handler.GinHandlerWrapper(reviewHandler.AddReview))
 	}

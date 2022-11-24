@@ -45,6 +45,38 @@ func (_m *UserRepository) CreateUser(user *domain.User) *domain.Response {
 	return r0
 }
 
+// DeleteMenuFavorite provides a mock function with given fields: payload
+func (_m *UserRepository) DeleteMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+	ret := _m.Called(payload)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(*domain.UserFavorite) *domain.Response); ok {
+		r0 = rf(payload)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
+// GetMenuFavorite provides a mock function with given fields: payload
+func (_m *UserRepository) GetMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+	ret := _m.Called(payload)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(*domain.UserFavorite) *domain.Response); ok {
+		r0 = rf(payload)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 // GetUserByEmail provides a mock function with given fields: email
 func (_m *UserRepository) GetUserByEmail(email string) *domain.Response {
 	ret := _m.Called(email)

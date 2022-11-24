@@ -20,7 +20,7 @@ type (
 		GetCoupons(c *gin.Context) *domain.Response
 		GetProfile(c *gin.Context) *domain.Response
 
-		AddMenuFavorite(c *gin.Context) *domain.Response
+		AddOrDeleteMenuFavorite(c *gin.Context) *domain.Response
 
 		UpdateUserData(c *gin.Context) *domain.Response
 	}
@@ -71,7 +71,7 @@ func (h *userHandler) GetProfile(c *gin.Context) *domain.Response {
 	return h.s.GetProfile(user_id.(string))
 }
 
-func (h *userHandler) AddMenuFavorite(c *gin.Context) *domain.Response {
+func (h *userHandler) AddOrDeleteMenuFavorite(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
 		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
@@ -84,5 +84,5 @@ func (h *userHandler) AddMenuFavorite(c *gin.Context) *domain.Response {
 		return util.SetResponse(nil, http.StatusBadRequest, err)
 	}
 
-	return h.s.AddMenuFavorite(param)
+	return h.s.AddOrDeleteMenuFavorite(param)
 }

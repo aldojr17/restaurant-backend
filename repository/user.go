@@ -13,11 +13,14 @@ type (
 	UserRepository interface {
 		GetUserById(id string) *domain.Response
 		GetUserByEmail(email string) *domain.Response
+		GetMenuFavorite(payload *domain.UserFavorite) *domain.Response
 
 		CreateUser(user *domain.User) *domain.Response
 		AddMenuFavorite(payload *domain.UserFavorite) *domain.Response
 
 		UpdateUserData(id string, data map[string]interface{}) *domain.Response
+
+		DeleteMenuFavorite(payload *domain.UserFavorite) *domain.Response
 	}
 
 	userRepository struct {
@@ -75,4 +78,20 @@ func (repo *userRepository) AddMenuFavorite(payload *domain.UserFavorite) *domai
 	}
 
 	return util.SetResponse(domain.ResponseAddedToFavorite, 0, nil)
+}
+
+func (repo *userRepository) GetMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+	if err := repo.db.Where("user_id = ?", payload.UserId).Where("menu_id = ?", payload.MenuId).First(&payload).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, domain.ErrFavoriteMenuNotFound)
+	}
+
+	return util.SetResponse(payload, 0, nil)
+}
+
+func (repo *userRepository) DeleteMenuFavorite(payload *domain.UserFavorite) *domain.Response {
+	if err := repo.db.Where("user_id = ?", payload.UserId).Where("menu_id = ?", payload.MenuId).Delete(&payload).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, domain.ErrMenuAlreadyAdded)
+	}
+
+	return util.SetResponse(domain.ResponseDeletedFromFavorite, 0, nil)
 }
