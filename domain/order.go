@@ -20,6 +20,7 @@ type Order struct {
 }
 
 type OrderPayload struct {
+	Id        int `json:"id"`
 	UserId    string
 	CouponId  *string   `json:"coupon_id"`
 	Notes     *string   `json:"notes"`

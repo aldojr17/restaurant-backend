@@ -121,7 +121,7 @@ func (repo *orderRepository) CreateOrder(order *domain.OrderPayload) *domain.Res
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
 
-	return util.SetResponse(domain.ResponseOrderCreated, 0, nil)
+	return util.SetResponse(order, 0, nil)
 }
 
 func (repo *orderRepository) CreateOrderDetails(orders *domain.OrderDetails) *domain.Response {
