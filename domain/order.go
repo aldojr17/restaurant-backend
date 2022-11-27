@@ -14,19 +14,21 @@ type Order struct {
 	PaymentId    int           `gorm:"column:payment_id" json:"payment_id"`
 	Status       string        `gorm:"column:status" json:"status"`
 	OrderDate    time.Time     `gorm:"column:order_date" json:"order_date"`
+	TotalPrice   int           `gorm:"column:total_price" json:"total_price"`
 	UpdatedAt    time.Time     `gorm:"column:updated_at" json:"updated_at"`
 	OrderDetails []OrderDetail `gorm:"foreignKey:OrderId;references:Id" json:"order_details"`
 	Payment      Payment       `gorm:"foreignKey:PaymentId;references:Id" json:"payment_detail"`
 }
 
 type OrderPayload struct {
-	Id        int `json:"id"`
-	UserId    string
-	CouponId  *string   `json:"coupon_id"`
-	Notes     *string   `json:"notes"`
-	PaymentId int       `json:"payment_id"`
-	Status    string    `json:"status"`
-	OrderDate time.Time `json:"order_date"`
+	Id         int `json:"id"`
+	UserId     string
+	CouponId   *string   `json:"coupon_id"`
+	Notes      *string   `json:"notes"`
+	PaymentId  int       `json:"payment_id"`
+	Status     string    `json:"status"`
+	OrderDate  time.Time `json:"order_date"`
+	TotalPrice int       `json:"total_price"`
 }
 
 type OrderStatusPayload struct {
@@ -117,6 +119,10 @@ func (o *OrderPayload) Validate(c *gin.Context) error {
 
 	if o.CouponId != nil && *o.CouponId == "" {
 		o.CouponId = nil
+	}
+
+	if o.TotalPrice == 0 {
+		return ErrTotalPriceRequired
 	}
 
 	o.OrderDate = time.Now()
