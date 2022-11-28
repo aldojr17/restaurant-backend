@@ -69,6 +69,7 @@ func (repo *orderRepository) GetAllUserOrders(pageable util.Pageable, user_id st
 
 	if arguments[1] != nil && arguments[1] != "0" {
 		err = repo.db.Preload("Payment").Preload("OrderDetails.MenuDetail.Category").
+			Preload("OrderDetails.MenuDetail.MenuOption").
 			Joins("left join order_details on order_details.order_id  = orders.id").
 			Joins("left join menus on menus.id  = order_details.menu_id").
 			Joins("left join categories on categories.id  = menus.category_id").
@@ -76,6 +77,7 @@ func (repo *orderRepository) GetAllUserOrders(pageable util.Pageable, user_id st
 			Where("COALESCE(menus.name, '') ILIKE ?", arguments[0]).Where("menus.category_id = ?", arguments[1]).Where("user_id = ?", user_id).Order(arguments[2]).Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&orders).Error
 	} else {
 		err = repo.db.Preload("Payment").Preload("OrderDetails.MenuDetail.Category").
+			Preload("OrderDetails.MenuDetail.MenuOption").
 			Joins("left join order_details on order_details.order_id  = orders.id").
 			Joins("left join menus on menus.id  = order_details.menu_id").
 			Joins("left join categories on categories.id  = menus.category_id").
