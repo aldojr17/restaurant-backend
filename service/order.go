@@ -54,7 +54,17 @@ func (s *orderService) CreateOrder(order *domain.OrderPayload) *domain.Response 
 		return util.SetResponse(nil, http.StatusBadRequest, domain.ErrCouponInvalid)
 	}
 
-	return s.orderRepo.CreateOrder(order)
+	response := s.orderRepo.CreateOrder(order)
+
+	if response.Err != nil {
+		return response
+	}
+
+	if err := s.couponRepo.ReduceQty(order.UserId, *order.CouponId); err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, err)
+	}
+
+	return response
 }
 
 func (s *orderService) CreateOrderDetails(orders *domain.OrderDetails) *domain.Response {

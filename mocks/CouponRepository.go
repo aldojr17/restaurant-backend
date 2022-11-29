@@ -77,6 +77,20 @@ func (_m *CouponRepository) GetValidCoupon(user_id string, coupon_id string) *do
 	return r0
 }
 
+// ReduceQty provides a mock function with given fields: user_id, coupon_id
+func (_m *CouponRepository) ReduceQty(user_id string, coupon_id string) error {
+	ret := _m.Called(user_id, coupon_id)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string, string) error); ok {
+		r0 = rf(user_id, coupon_id)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 type mockConstructorTestingTNewCouponRepository interface {
 	mock.TestingT
 	Cleanup(func())
