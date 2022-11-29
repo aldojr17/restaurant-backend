@@ -34,7 +34,12 @@ func (p *PageableRequest) SortBy() string {
 
 	switch p.Type {
 	case "menu":
-		if strings.ToLower(p.Sort_by) != "price" && strings.ToLower(p.Sort_by) != "name" && strings.ToLower(p.Sort_by) != "rating" && strings.ToLower(p.Sort_by) != "is_available" {
+		if strings.ToLower(p.Sort_by) == "date" {
+			p.Sort_by = "created_at"
+			break
+		}
+
+		if strings.ToLower(p.Sort_by) != "price" && strings.ToLower(p.Sort_by) != "name" && strings.ToLower(p.Sort_by) != "rating" {
 			return "name ASC"
 		}
 	case "order":
