@@ -31,6 +31,7 @@ type UserProfile struct {
 type UserFavorite struct {
 	UserId string `gorm:"column:user_id" json:"user_id"`
 	MenuId int    `gorm:"column:menu_id" json:"menu_id"`
+	Menu   Menu   `gorm:"foreignKey:MenuId;references:Id" json:"menu"`
 }
 
 func (u *UserProfile) Validate(c *gin.Context) error {
