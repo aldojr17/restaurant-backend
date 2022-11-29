@@ -63,11 +63,11 @@ func (repo *menuRepository) GetAllMenus(pageable util.Pageable) (*util.Page, err
 	var menus domain.Menus
 
 	if arguments[1] != nil && arguments[1] != "0" {
-		err = repo.db.Preload("Category").Preload("MenuOption").
+		err = repo.db.Preload("Category").Preload("MenuOption").Preload("Reviews").
 			Where("name ILIKE ?", arguments[0].(string)).Where("category_id = ?", arguments[1]).Order(arguments[2]).
 			Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&menus).Error
 	} else {
-		err = repo.db.Preload("Category").Preload("MenuOption").
+		err = repo.db.Preload("Category").Preload("MenuOption").Preload("Reviews").
 			Where("name ILIKE ?", arguments[0].(string)).Order(arguments[2]).
 			Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&menus).Error
 	}
@@ -109,7 +109,7 @@ func (repo *menuRepository) DeleteMenu(menu_id int) *domain.Response {
 func (repo *menuRepository) GetMenu(menu_id int) *domain.Response {
 	menu := new(domain.Menu)
 
-	if err := repo.db.Preload("Category").Preload("MenuOption").Where("id = ?", menu_id).First(&menu).Error; err != nil {
+	if err := repo.db.Preload("Category").Preload("MenuOption").Preload("Reviews").Where("id = ?", menu_id).First(&menu).Error; err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, domain.ErrMenuNotFound)
 	}
 

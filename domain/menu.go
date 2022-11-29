@@ -22,6 +22,7 @@ type Menu struct {
 	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 	Category    Category       `gorm:"foreignKey:CategoryId;references:Id" json:"category"`
 	MenuOption  []MenuOption   `gorm:"foreignKey:MenuId;references:Id" json:"menu_option"`
+	Reviews     []Review       `gorm:"foreignKey:MenuId;references:Id" json:"reviews"`
 }
 
 type MenuPayload struct {

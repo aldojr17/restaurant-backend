@@ -7,12 +7,12 @@ import (
 )
 
 type Review struct {
-	Id          int       `gorm:"primaryKey;column:id"`
-	UserId      string    `gorm:"column:user_id"`
+	Id          int       `gorm:"primaryKey;column:id" json:"id"`
+	UserId      string    `gorm:"column:user_id" json:"user_id"`
 	MenuId      int       `gorm:"column:menu_id" json:"menu_id"`
-	Description string    `gorm:"column:description"`
-	Rating      float32   `gorm:"column:rating"`
-	CreatedAt   time.Time `gorm:"column:created_at"`
+	Description string    `gorm:"column:description" json:"description"`
+	Rating      float32   `gorm:"column:rating" json:"rating"`
+	CreatedAt   time.Time `gorm:"column:created_at" json:"created_at"`
 }
 
 type Reviews []Review
