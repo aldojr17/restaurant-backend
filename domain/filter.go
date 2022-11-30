@@ -43,7 +43,7 @@ func (p *PageableRequest) SortBy() string {
 			return "name ASC"
 		}
 	case "order":
-		if strings.ToLower(p.Sort_by) != "order_date" {
+		if strings.ToLower(p.Sort_by) != "order_date" && strings.ToLower(p.Sort_by) != "total_price" {
 			return "order_date DESC"
 		}
 	default:
