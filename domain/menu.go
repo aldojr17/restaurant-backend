@@ -26,12 +26,14 @@ type Menu struct {
 }
 
 type MenuPayload struct {
-	Name        string  `json:"name"`
-	Price       int     `json:"price"`
-	Photo       string  `json:"photo"`
-	CategoryId  int     `json:"category_id"`
-	Rating      float32 `json:"rating"`
-	IsAvailable bool    `json:"is_available"`
+	Name        string `json:"name"`
+	Price       int    `json:"price"`
+	Photo       string `json:"photo"`
+	CategoryId  int    `json:"category_id"`
+	Rating      int    `json:"-"`
+	TotalReview int    `json:"-"`
+	IsAvailable bool   `json:"is_available"`
+	Description string `json:"description"`
 }
 
 type MenuOption struct {
@@ -47,6 +49,9 @@ func (m *MenuPayload) Validate(c *gin.Context) error {
 	if err := c.ShouldBindJSON(m); err != nil {
 		return err
 	}
+
+	m.Rating = 0
+	m.TotalReview = 0
 
 	return nil
 }
