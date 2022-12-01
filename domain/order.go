@@ -121,10 +121,6 @@ func (o *OrderPayload) Validate(c *gin.Context) error {
 		o.CouponId = nil
 	}
 
-	if o.TotalPrice == 0 {
-		return ErrTotalPriceRequired
-	}
-
 	o.OrderDate = time.Now()
 
 	return nil
