@@ -22,8 +22,9 @@ func AdminRoutes(router *gin.Engine, app *initialize.Application) {
 		users.DELETE("/menus/:id", handler.GinHandlerWrapper(menuHandler.DeleteMenu))
 
 		users.GET("/coupons", handler.GinHandlerWrapper(couponHandler.GetAllCoupon))
+		users.GET("/coupons/:id", handler.GinHandlerWrapper(couponHandler.GetCoupon))
 		users.POST("/coupons", handler.GinHandlerWrapper(couponHandler.CreateCoupon))
 		users.DELETE("/coupons/:id", handler.GinHandlerWrapper(couponHandler.DeleteCoupon))
-		users.GET("/coupons/:id", handler.GinHandlerWrapper(couponHandler.GetCoupon))
+		users.PUT("/coupons/:id", handler.GinHandlerWrapper(couponHandler.UpdateCoupon))
 	}
 }

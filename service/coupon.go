@@ -14,6 +14,7 @@ type (
 		DeleteCoupon(id string) *domain.Response
 		GetAllCoupon() *domain.Response
 		GetCoupon(id string) *domain.Response
+		UpdateCoupon(coupon *domain.Coupon) *domain.Response
 	}
 
 	couponService struct {
@@ -46,4 +47,8 @@ func (s *couponService) GetAllCoupon() *domain.Response {
 
 func (s *couponService) GetCoupon(id string) *domain.Response {
 	return s.repo.GetCoupon(id)
+}
+
+func (s *couponService) UpdateCoupon(coupon *domain.Coupon) *domain.Response {
+	return s.repo.UpdateCoupon(coupon)
 }
