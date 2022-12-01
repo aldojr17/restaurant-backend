@@ -18,6 +18,7 @@ type (
 		GetValidCoupon(user_id string, coupon_id string) *domain.Response
 		ReduceQty(user_id string, coupon_id string) error
 		GetAllCoupon() *domain.Response
+		GetCoupon(id string) *domain.Response
 	}
 
 	couponRepository struct {
@@ -86,4 +87,14 @@ func (repo *couponRepository) GetAllCoupon() *domain.Response {
 	}
 
 	return util.SetResponse(coupons, 0, nil)
+}
+
+func (repo *couponRepository) GetCoupon(id string) *domain.Response {
+	coupon := new(domain.Coupon)
+
+	if err := repo.db.Where("valid_until > ?", time.Now()).Where("id = ?", id).Find(&coupon).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(coupon, 0, nil)
 }
