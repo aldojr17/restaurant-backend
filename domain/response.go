@@ -14,7 +14,7 @@ type LoginResponse struct {
 }
 
 type UserResponse struct {
-	Id             string         `json:"id"`
+	Id             string         `gorm:"column:id" json:"id"`
 	Email          string         `json:"email"`
 	Address        *string        `json:"address"`
 	FullName       string         `json:"full_name"`

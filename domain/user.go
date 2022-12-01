@@ -7,16 +7,16 @@ import (
 )
 
 type User struct {
-	Id             string         `gorm:"primaryKey;column:id"`
-	Email          string         `gorm:"column:email"`
-	Password       string         `gorm:"column:password"`
-	Address        *string        `gorm:"column:address"`
-	FullName       string         `gorm:"column:full_name"`
-	Phone          *string        `gorm:"column:phone"`
-	ProfilePicture *string        `gorm:"column:profile_picture"`
-	Role           int            `gorm:"column:role"`
-	CreatedAt      time.Time      `gorm:"column:created_at"`
-	UpdatedAt      time.Time      `gorm:"column:updated_at"`
+	Id             string         `gorm:"primaryKey;column:id" json:"id"`
+	Email          string         `gorm:"column:email" json:"email"`
+	Password       string         `gorm:"column:password" json:"-"`
+	Address        *string        `gorm:"column:address" json:"address"`
+	FullName       string         `gorm:"column:full_name" json:"full_name"`
+	Phone          *string        `gorm:"column:phone" json:"phone"`
+	ProfilePicture *string        `gorm:"column:profile_picture" json:"profile"`
+	Role           int            `gorm:"column:role" json:"-"`
+	CreatedAt      time.Time      `gorm:"column:created_at" json:"-"`
+	UpdatedAt      time.Time      `gorm:"column:updated_at" json:"-"`
 	Favorites      []UserFavorite `gorm:"foreignKey:UserId;references:Id" json:"favorites"`
 }
 

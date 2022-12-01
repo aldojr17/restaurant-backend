@@ -45,6 +45,38 @@ func (_m *CouponRepository) DeleteCoupon(id string) *domain.Response {
 	return r0
 }
 
+// GetAllCoupon provides a mock function with given fields:
+func (_m *CouponRepository) GetAllCoupon() *domain.Response {
+	ret := _m.Called()
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func() *domain.Response); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
+// GetCoupon provides a mock function with given fields: id
+func (_m *CouponRepository) GetCoupon(id string) *domain.Response {
+	ret := _m.Called(id)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(string) *domain.Response); ok {
+		r0 = rf(id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 // GetCouponOwnedByUser provides a mock function with given fields: user_id
 func (_m *CouponRepository) GetCouponOwnedByUser(user_id string) *domain.Response {
 	ret := _m.Called(user_id)
@@ -86,6 +118,22 @@ func (_m *CouponRepository) ReduceQty(user_id string, coupon_id string) error {
 		r0 = rf(user_id, coupon_id)
 	} else {
 		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// UpdateCoupon provides a mock function with given fields: coupon
+func (_m *CouponRepository) UpdateCoupon(coupon *domain.Coupon) *domain.Response {
+	ret := _m.Called(coupon)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(*domain.Coupon) *domain.Response); ok {
+		r0 = rf(coupon)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
 	}
 
 	return r0
