@@ -25,6 +25,7 @@ type UserCoupon struct {
 }
 
 type UserCoupons []UserCoupon
+type Coupons []Coupon
 
 func (coupon *Coupon) Validate(c *gin.Context) error {
 	if err := c.ShouldBindJSON(coupon); err != nil {
