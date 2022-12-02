@@ -110,10 +110,10 @@ func (o *OrderPayload) Validate(c *gin.Context) error {
 	}
 
 	if o.Status == "" {
-		o.Status = DELIVERY_STATUS_IN_PROGRESS
+		o.Status = DELIVERY_STATUS_ON_THE_WAY
 	}
 
-	if o.Status != DELIVERY_STATUS_IN_PROGRESS && o.Status != DELIVERY_STATUS_IN_TRANSIT && o.Status != DELIVERY_STATUS_RECEIVED {
+	if o.Status != DELIVERY_STATUS_ON_THE_WAY && o.Status != DELIVERY_STATUS_PREPARING && o.Status != DELIVERY_STATUS_RECEIVED {
 		return ErrInvalidStatus
 	}
 

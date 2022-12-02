@@ -24,7 +24,7 @@ var (
 	ErrFavoriteMenuNotFound = errors.New("favorite menu not found")
 	ErrCouponInvalid        = errors.New("coupon invalid")
 	ErrRatingMinMax         = errors.New("rating min 0 and max 5")
-	ErrInvalidStatus        = errors.New("invalid order status (In Progress, In Transit, Received)")
+	ErrInvalidStatus        = errors.New("invalid order status (Preparing, On The Way, Received)")
 )
 
 const (
@@ -43,9 +43,9 @@ const (
 	ResponseOrderStatusUpdated  = "Order Status Updated."
 	ResponseCouponCreated       = "Coupon Created."
 
-	DELIVERY_STATUS_IN_PROGRESS = "In Progress"
-	DELIVERY_STATUS_IN_TRANSIT  = "In Transit"
-	DELIVERY_STATUS_RECEIVED    = "Received"
+	DELIVERY_STATUS_PREPARING  = "Preparing"
+	DELIVERY_STATUS_ON_THE_WAY = "On The Way"
+	DELIVERY_STATUS_RECEIVED   = "Received"
 )
 
 var regex = regexp.MustCompile("^[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)*$")
