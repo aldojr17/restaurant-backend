@@ -36,14 +36,34 @@ func (s *reviewService) AddReview(payload *domain.Review) *domain.Response {
 
 	if response := s.repo.GetReview(payload.UserId, payload.MenuId); response.Err == nil {
 		payload.Id = response.Data.(*domain.Review).Id
-		return s.repo.UpdateReview(payload)
+
+		if response := s.repo.UpdateReview(payload); response.Err != nil {
+			return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+		}
+
+		data := map[string]interface{}{
+			"rating": gorm.Expr("rating - ?", 5-payload.Rating),
+		}
+
+		response := s.menuRepo.UpdateMenuRating(payload.MenuId, data)
+
+		if response.Err != nil {
+			return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+		}
+
+		return response
 	}
 
 	if response := s.repo.AddReview(payload); response.Err != nil {
 		return util.SetResponse(nil, http.StatusBadRequest, response.Err)
 	}
 
-	response := s.menuRepo.UpdateMenuRating(payload.MenuId, payload.Rating)
+	data := map[string]interface{}{
+		"rating":       gorm.Expr("rating + ?", payload.Rating),
+		"total_review": gorm.Expr("total_review + 1"),
+	}
+
+	response := s.menuRepo.UpdateMenuRating(payload.MenuId, data)
 
 	if response.Err != nil {
 		return util.SetResponse(nil, http.StatusBadRequest, response.Err)
