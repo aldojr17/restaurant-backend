@@ -70,6 +70,7 @@ func (repo *orderRepository) GetAllUserOrders(pageable util.Pageable, user_id st
 	if arguments[1] != nil && arguments[1] != "0" {
 		err = repo.db.Preload("Payment").Preload("OrderDetails.MenuDetail.Category").
 			Preload("OrderDetails.MenuDetail.MenuOption").
+			Preload("Coupon").
 			Joins("left join order_details on order_details.order_id  = orders.id").
 			Joins("left join menus on menus.id  = order_details.menu_id").
 			Joins("left join categories on categories.id  = menus.category_id").
@@ -78,6 +79,7 @@ func (repo *orderRepository) GetAllUserOrders(pageable util.Pageable, user_id st
 	} else {
 		err = repo.db.Preload("Payment").Preload("OrderDetails.MenuDetail.Category").
 			Preload("OrderDetails.MenuDetail.MenuOption").
+			Preload("Coupon").
 			Joins("left join order_details on order_details.order_id  = orders.id").
 			Joins("left join menus on menus.id  = order_details.menu_id").
 			Joins("left join categories on categories.id  = menus.category_id").

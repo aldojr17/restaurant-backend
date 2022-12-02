@@ -18,6 +18,8 @@ type Order struct {
 	UpdatedAt    time.Time     `gorm:"column:updated_at" json:"updated_at"`
 	OrderDetails []OrderDetail `gorm:"foreignKey:OrderId;references:Id" json:"order_details"`
 	Payment      Payment       `gorm:"foreignKey:PaymentId;references:Id" json:"payment_detail"`
+	Subtotal     int           `gorm:"column:subtotal" json:"subtotal"`
+	Coupon       Coupon        `gorm:"foreignKey:CouponId;references:Id" json:"coupon"`
 }
 
 type OrderPayload struct {
@@ -29,6 +31,7 @@ type OrderPayload struct {
 	Status     string    `json:"status"`
 	OrderDate  time.Time `json:"order_date"`
 	TotalPrice int       `json:"total_price"`
+	Subtotal   int       `json:"subtotal"`
 }
 
 type OrderStatusPayload struct {
@@ -110,7 +113,7 @@ func (o *OrderPayload) Validate(c *gin.Context) error {
 	}
 
 	if o.Status == "" {
-		o.Status = DELIVERY_STATUS_ON_THE_WAY
+		o.Status = DELIVERY_STATUS_PREPARING
 	}
 
 	if o.Status != DELIVERY_STATUS_ON_THE_WAY && o.Status != DELIVERY_STATUS_PREPARING && o.Status != DELIVERY_STATUS_RECEIVED {
