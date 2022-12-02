@@ -102,13 +102,13 @@ func (_m *MenuRepository) UpdateMenu(menu *domain.MenuPayload, menu_id int) *dom
 	return r0
 }
 
-// UpdateMenuRating provides a mock function with given fields: menu_id, rating
-func (_m *MenuRepository) UpdateMenuRating(menu_id int, rating float32) *domain.Response {
-	ret := _m.Called(menu_id, rating)
+// UpdateMenuRating provides a mock function with given fields: menu_id, data
+func (_m *MenuRepository) UpdateMenuRating(menu_id int, data map[string]interface{}) *domain.Response {
+	ret := _m.Called(menu_id, data)
 
 	var r0 *domain.Response
-	if rf, ok := ret.Get(0).(func(int, float32) *domain.Response); ok {
-		r0 = rf(menu_id, rating)
+	if rf, ok := ret.Get(0).(func(int, map[string]interface{}) *domain.Response); ok {
+		r0 = rf(menu_id, data)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*domain.Response)
