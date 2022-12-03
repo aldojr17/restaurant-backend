@@ -4,6 +4,7 @@ import (
 	"final-project-backend/domain"
 	"final-project-backend/repository"
 	"final-project-backend/util"
+	"net/http"
 
 	"gorm.io/gorm"
 )
@@ -35,7 +36,25 @@ func (s *menuService) GetAllMenus(pageable util.Pageable) (*util.Page, error) {
 }
 
 func (s *menuService) CreateMenu(menu *domain.MenuPayload) *domain.Response {
-	return s.menuRepo.CreateMenu(menu)
+	response := s.menuRepo.CreateMenu(menu)
+
+	if response.Err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+	}
+
+	newMenu := response.Data.(*domain.MenuPayload)
+
+	if len(newMenu.Options) != 0 {
+		for index := range newMenu.Options {
+			newMenu.Options[index].MenuId = newMenu.Id
+		}
+
+		if response := s.menuRepo.AddMenuOption(&menu.Options); response.Err != nil {
+			return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+		}
+	}
+
+	return response
 }
 
 func (s *menuService) UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.Response {

@@ -15,6 +15,22 @@ type MenuRepository struct {
 	mock.Mock
 }
 
+// AddMenuOption provides a mock function with given fields: options
+func (_m *MenuRepository) AddMenuOption(options *[]domain.MenuOption) *domain.Response {
+	ret := _m.Called(options)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(*[]domain.MenuOption) *domain.Response); ok {
+		r0 = rf(options)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 // CreateMenu provides a mock function with given fields: menu
 func (_m *MenuRepository) CreateMenu(menu *domain.MenuPayload) *domain.Response {
 	ret := _m.Called(menu)

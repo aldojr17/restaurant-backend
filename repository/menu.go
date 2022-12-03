@@ -17,6 +17,7 @@ type (
 		DeleteMenu(menu_id int) *domain.Response
 		GetMenu(menu_id int) *domain.Response
 		UpdateMenuRating(menu_id int, data map[string]interface{}) *domain.Response
+		AddMenuOption(options *[]domain.MenuOption) *domain.Response
 	}
 
 	menuRepository struct {
@@ -122,4 +123,12 @@ func (repo *menuRepository) UpdateMenuRating(menu_id int, data map[string]interf
 	}
 
 	return util.SetResponse(domain.ResponseMenuUpdated, 0, nil)
+}
+
+func (repo *menuRepository) AddMenuOption(options *[]domain.MenuOption) *domain.Response {
+	if err := repo.db.Create(&options).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(options, 0, nil)
 }
