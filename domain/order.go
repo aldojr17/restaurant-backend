@@ -20,6 +20,7 @@ type Order struct {
 	Payment      Payment       `gorm:"foreignKey:PaymentId;references:Id" json:"payment_detail"`
 	Subtotal     int           `gorm:"column:subtotal" json:"subtotal"`
 	Coupon       Coupon        `gorm:"foreignKey:CouponId;references:Id" json:"coupon"`
+	User         User          `gorm:"foreignKey:UserId;references:Id" json:"user"`
 }
 
 type OrderPayload struct {
