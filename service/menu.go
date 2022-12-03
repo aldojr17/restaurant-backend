@@ -58,7 +58,23 @@ func (s *menuService) CreateMenu(menu *domain.MenuPayload) *domain.Response {
 }
 
 func (s *menuService) UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.Response {
-	return s.menuRepo.UpdateMenu(menu, menu_id)
+	response := s.menuRepo.UpdateMenu(menu, menu_id)
+
+	if response.Err != nil {
+		return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+	}
+
+	if len(menu.Options) != 0 {
+		for index := range menu.Options {
+			menu.Options[index].MenuId = menu_id
+		}
+
+		if response := s.menuRepo.AddMenuOption(&menu.Options); response.Err != nil {
+			return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+		}
+	}
+
+	return response
 }
 
 func (s *menuService) DeleteMenu(menu_id int) *domain.Response {
