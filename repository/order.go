@@ -132,15 +132,6 @@ func (repo *orderRepository) GetAllOrders(pageable util.Pageable) (*util.Page, e
 
 	err = chainMethod.Count(&count).Error
 
-	// else {
-	// 	err = repo.db.Model(domain.Order{}).Joins("left join order_details on order_details.order_id  = orders.id").
-	// 		Joins("left join menus on menus.id  = order_details.menu_id").
-	// 		Joins("left join categories on categories.id  = menus.category_id").
-	// 		Group("orders.id").
-	// 		Where("COALESCE(menus.name, '') ILIKE ?", arguments[0]).
-	// 		Count(&count).Error
-	// }
-
 	if err != nil {
 		return util.NewPaginator(pageable.GetPage(), pageable.GetLimit(), 0).
 			Pageable(domain.Orders{}), err
@@ -157,26 +148,6 @@ func (repo *orderRepository) GetAllOrders(pageable util.Pageable) (*util.Page, e
 	var orders domain.Orders
 
 	err = chainMethod.Order(arguments[3]).Limit(arguments[4].(int)).Offset(arguments[5].(int)).Find(&orders).Error
-
-	// if arguments[1] != nil && arguments[1] != "0" {
-	// 	chainMethod = repo.db
-	// 	Joins("left join order_details on order_details.order_id  = orders.id").
-	// 		Joins("left join menus on menus.id  = order_details.menu_id").
-	// 		Joins("left join categories on categories.id  = menus.category_id").
-	// 		Group("orders.id").
-	// 		Where("COALESCE(menus.name, '') ILIKE ?", arguments[0]).Where("menus.category_id = ?", arguments[1]).
-	// 		Order(arguments[2]).Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&orders).Error
-	// } else {
-	// 	err = repo.db.Preload("Payment").Preload("OrderDetails.MenuDetail.Category").
-	// 		Preload("Coupon").
-	// 		Preload("User").
-	// 		Preload("OrderDetails.MenuDetail.MenuOption").
-	// 		Joins("left join order_details on order_details.order_id  = orders.id").
-	// 		Joins("left join menus on menus.id  = order_details.menu_id").
-	// 		Joins("left join categories on categories.id  = menus.category_id").
-	// 		Group("orders.id").
-	// 		Where("COALESCE(menus.name, '') ILIKE ?", arguments[0]).Order(arguments[2]).Limit(arguments[3].(int)).Offset(arguments[4].(int)).Find(&orders).Error
-	// }
 
 	if err != nil {
 		return util.NewPaginator(pageable.GetPage(), pageable.GetLimit(), 0).
