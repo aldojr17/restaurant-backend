@@ -26,13 +26,14 @@ type Order struct {
 type OrderPayload struct {
 	Id         int `json:"id"`
 	UserId     string
-	CouponId   *string   `json:"coupon_id"`
-	Notes      *string   `json:"notes"`
-	PaymentId  int       `json:"payment_id"`
-	Status     string    `json:"status"`
-	OrderDate  time.Time `json:"order_date"`
-	TotalPrice int       `json:"total_price"`
-	Subtotal   int       `json:"subtotal"`
+	CouponId   *string              `json:"coupon_id"`
+	Notes      *string              `json:"notes"`
+	PaymentId  int                  `json:"payment_id"`
+	Status     string               `json:"status"`
+	OrderDate  time.Time            `json:"order_date"`
+	TotalPrice int                  `json:"total_price"`
+	Subtotal   int                  `json:"subtotal"`
+	Orders     []OrderDetailPayload `gorm:"-" json:"orders"`
 }
 
 type OrderStatusPayload struct {
@@ -56,10 +57,6 @@ type OrderDetailPayload struct {
 	OptionId *int `json:"option_id"`
 }
 
-type OrderDetails struct {
-	Orders []OrderDetailPayload `json:"orders"`
-}
-
 type Orders []Order
 
 func (o *OrderStatusPayload) Validate(c *gin.Context) error {
@@ -75,30 +72,8 @@ func (o *OrderDetailPayload) Validate(c *gin.Context) error {
 		return ErrMenuIdRequired
 	}
 
-	if o.OrderId == 0 {
-		return ErrOrderIdRequired
-	}
-
 	if o.Qty == 0 {
 		return ErrQtyRequired
-	}
-
-	return nil
-}
-
-func (o *OrderDetails) Validate(c *gin.Context) error {
-	if err := c.ShouldBindJSON(o); err != nil {
-		return err
-	}
-
-	if len(o.Orders) == 0 {
-		return ErrOrdersRequired
-	}
-
-	for _, order := range o.Orders {
-		if err := order.Validate(c); err != nil {
-			return err
-		}
 	}
 
 	return nil
@@ -123,6 +98,16 @@ func (o *OrderPayload) Validate(c *gin.Context) error {
 
 	if o.CouponId != nil && *o.CouponId == "" {
 		o.CouponId = nil
+	}
+
+	if len(o.Orders) == 0 {
+		return ErrOrderDetailsRequired
+	}
+
+	for _, order := range o.Orders {
+		if err := order.Validate(c); err != nil {
+			return err
+		}
 	}
 
 	o.OrderDate = time.Now()

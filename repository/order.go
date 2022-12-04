@@ -14,7 +14,7 @@ type (
 		GetAllOrders(pageable util.Pageable) (*util.Page, error)
 		UpdateOrderStatus(order *domain.OrderStatusPayload) *domain.Response
 		CreateOrder(order *domain.OrderPayload) *domain.Response
-		CreateOrderDetails(orders *domain.OrderDetails) *domain.Response
+		CreateOrderDetails(orders *[]domain.OrderDetailPayload) *domain.Response
 	}
 
 	orderRepository struct {
@@ -183,8 +183,8 @@ func (repo *orderRepository) CreateOrder(order *domain.OrderPayload) *domain.Res
 	return util.SetResponse(order, 0, nil)
 }
 
-func (repo *orderRepository) CreateOrderDetails(orders *domain.OrderDetails) *domain.Response {
-	if err := repo.db.Table("order_details").Create(&orders.Orders).Error; err != nil {
+func (repo *orderRepository) CreateOrderDetails(orders *[]domain.OrderDetailPayload) *domain.Response {
+	if err := repo.db.Table("order_details").Create(&orders).Error; err != nil {
 		return util.SetResponse(nil, http.StatusInternalServerError, err)
 	}
 

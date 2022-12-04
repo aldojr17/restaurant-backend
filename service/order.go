@@ -15,7 +15,7 @@ type (
 		GetAllOrders(pageable util.Pageable) (*util.Page, error)
 		UpdateOrderStatus(order *domain.OrderStatusPayload) *domain.Response
 		CreateOrder(order *domain.OrderPayload) *domain.Response
-		CreateOrderDetails(orders *domain.OrderDetails) *domain.Response
+		// CreateOrderDetails(orders *domain.OrderDetails) *domain.Response
 	}
 
 	orderService struct {
@@ -47,7 +47,21 @@ func (s *orderService) UpdateOrderStatus(order *domain.OrderStatusPayload) *doma
 
 func (s *orderService) CreateOrder(order *domain.OrderPayload) *domain.Response {
 	if order.CouponId == nil {
-		return s.orderRepo.CreateOrder(order)
+		response := s.orderRepo.CreateOrder(order)
+
+		if response.Err != nil {
+			return response
+		}
+
+		for index := range order.Orders {
+			order.Orders[index].OrderId = response.Data.(*domain.OrderPayload).Id
+		}
+
+		if response := s.orderRepo.CreateOrderDetails(&order.Orders); response.Err != nil {
+			return response
+		}
+
+		return response
 	}
 
 	if response := s.couponRepo.GetValidCoupon(order.UserId, *order.CouponId); response.Err != nil {
@@ -60,6 +74,14 @@ func (s *orderService) CreateOrder(order *domain.OrderPayload) *domain.Response 
 		return response
 	}
 
+	for index := range order.Orders {
+		order.Orders[index].OrderId = response.Data.(*domain.OrderPayload).Id
+	}
+
+	if response := s.orderRepo.CreateOrderDetails(&order.Orders); response.Err != nil {
+		return response
+	}
+
 	if err := s.couponRepo.ReduceQty(order.UserId, *order.CouponId); err != nil {
 		return util.SetResponse(nil, http.StatusBadRequest, err)
 	}
@@ -67,6 +89,6 @@ func (s *orderService) CreateOrder(order *domain.OrderPayload) *domain.Response 
 	return response
 }
 
-func (s *orderService) CreateOrderDetails(orders *domain.OrderDetails) *domain.Response {
-	return s.orderRepo.CreateOrderDetails(orders)
-}
+// func (s *orderService) CreateOrderDetails(orders *domain.OrderDetails) *domain.Response {
+// 	return s.orderRepo.CreateOrderDetails(orders)
+// }

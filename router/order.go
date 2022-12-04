@@ -10,5 +10,5 @@ import (
 func OrderRoutes(router *gin.Engine, app *initialize.Application) {
 	orderHandler := handler.NewOrderHandler(app)
 	router.POST("/orders", handler.GinHandlerWrapper(orderHandler.CreateOrder))
-	router.POST("/order-details", handler.GinHandlerWrapper(orderHandler.CreateOrderDetails))
+	// router.POST("/order-details", handler.GinHandlerWrapper(orderHandler.CreateOrderDetails))
 }
