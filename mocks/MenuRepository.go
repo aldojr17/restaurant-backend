@@ -118,6 +118,22 @@ func (_m *MenuRepository) UpdateMenu(menu *domain.MenuPayload, menu_id int) *dom
 	return r0
 }
 
+// UpdateMenuOption provides a mock function with given fields: option
+func (_m *MenuRepository) UpdateMenuOption(option *domain.MenuOption) *domain.Response {
+	ret := _m.Called(option)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(*domain.MenuOption) *domain.Response); ok {
+		r0 = rf(option)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 // UpdateMenuRating provides a mock function with given fields: menu_id, data
 func (_m *MenuRepository) UpdateMenuRating(menu_id int, data map[string]interface{}) *domain.Response {
 	ret := _m.Called(menu_id, data)

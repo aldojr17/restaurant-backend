@@ -65,12 +65,22 @@ func (s *menuService) UpdateMenu(menu *domain.MenuPayload, menu_id int) *domain.
 	}
 
 	if len(menu.Options) != 0 {
-		for index := range menu.Options {
-			menu.Options[index].MenuId = menu_id
+		newOption := []domain.MenuOption{}
+		for index, option := range menu.Options {
+			if option.MenuId != 0 {
+				if response := s.menuRepo.UpdateMenuOption(&option); response.Err != nil {
+					return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+				}
+			} else {
+				menu.Options[index].MenuId = menu_id
+				newOption = append(newOption, menu.Options[index])
+			}
 		}
 
-		if response := s.menuRepo.AddMenuOption(&menu.Options); response.Err != nil {
-			return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+		if len(newOption) != 0 {
+			if response := s.menuRepo.AddMenuOption(&newOption); response.Err != nil {
+				return util.SetResponse(nil, http.StatusBadRequest, response.Err)
+			}
 		}
 	}
 

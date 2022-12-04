@@ -41,11 +41,28 @@ type MenuPayload struct {
 type MenuOption struct {
 	Id     int    `gorm:"primaryKey;column:id" json:"id"`
 	MenuId int    `gorm:"column:menu_id" json:"menu_id"`
-	Name   string `gorm:"name" json:"name"`
-	Price  int    `gorm:"price" json:"price"`
+	Name   string `gorm:"column:name" json:"name"`
+	Price  int    `gorm:"column:price" json:"price"`
 }
 
 type Menus []Menu
+
+// func (m *MenuOption) BeforeUpdate(tx *gorm.DB) (err error) {
+// 	// if Role changed
+// 	if tx.Statement.Changed("Name", "Price") {
+// 		return errors.New("role not allowed to change")
+// 	}
+
+// 	// if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
+// 	//   tx.Statement.SetColumn("Age", 18)
+// 	// }
+
+// 	// // if any fields changed
+// 	// if tx.Statement.Changed() {
+// 	//   tx.Statement.SetColumn("RefreshedAt", time.Now())
+// 	// }
+// 	return nil
+// }
 
 func (m *MenuPayload) Validate(c *gin.Context) error {
 	if err := c.ShouldBindJSON(m); err != nil {
