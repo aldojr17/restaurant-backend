@@ -8,6 +8,7 @@ import (
 	"final-project-backend/util"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -122,6 +123,29 @@ func newOrderPageableRequest(r *http.Request) *domain.PageableRequest {
 	p.Desceding = util.SortDirectionFromQueryParam(r)
 	p.Search = map[string]interface{}{}
 	p.Filters = map[string]interface{}{}
+
+	filter := new(domain.OrderFilter)
+	inputFilter := queryParamOrNull(r, util.FILTER_BY_DATE)
+
+	if inputFilter != nil {
+		switch inputFilter {
+		case "this_week":
+			filter.Start = time.Now().AddDate(0, 0, -7)
+
+			p.Filters[util.FILTER_BY_DATE] = filter
+
+		case "this_month":
+			filter.Start = time.Now().AddDate(0, -1, 0)
+
+			p.Filters[util.FILTER_BY_DATE] = filter
+
+		case "last_month":
+			filter.Start = time.Now().AddDate(0, -1, 0)
+			filter.End = time.Now().AddDate(0, -2, 0)
+
+			p.Filters[util.FILTER_BY_DATE] = filter
+		}
+	}
 
 	p.Search[util.SEARCH_BY_NAME] = queryLikeParamOrNull(r, util.SEARCH_BY_NAME)
 	p.Filters[util.FILTER_BY_CATEGORY] = queryParamOrNull(r, util.FILTER_BY_CATEGORY)

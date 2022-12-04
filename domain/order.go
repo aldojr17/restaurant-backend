@@ -57,6 +57,11 @@ type OrderDetailPayload struct {
 	OptionId *int `json:"option_id"`
 }
 
+type OrderFilter struct {
+	Start time.Time
+	End   time.Time
+}
+
 type Orders []Order
 
 func (o *OrderStatusPayload) Validate(c *gin.Context) error {

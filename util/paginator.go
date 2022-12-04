@@ -11,6 +11,7 @@ const (
 	SEARCH_BY_NAME = "name"
 
 	FILTER_BY_CATEGORY = "category"
+	FILTER_BY_DATE     = "date"
 
 	DEFAULT_SORT_BY       = "rating"
 	DEFAULT_SORT_BY_ORDER = "order_date"
