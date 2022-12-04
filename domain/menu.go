@@ -47,23 +47,6 @@ type MenuOption struct {
 
 type Menus []Menu
 
-// func (m *MenuOption) BeforeUpdate(tx *gorm.DB) (err error) {
-// 	// if Role changed
-// 	if tx.Statement.Changed("Name", "Price") {
-// 		return errors.New("role not allowed to change")
-// 	}
-
-// 	// if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
-// 	//   tx.Statement.SetColumn("Age", 18)
-// 	// }
-
-// 	// // if any fields changed
-// 	// if tx.Statement.Changed() {
-// 	//   tx.Statement.SetColumn("RefreshedAt", time.Now())
-// 	// }
-// 	return nil
-// }
-
 func (m *MenuPayload) Validate(c *gin.Context) error {
 	if err := c.ShouldBindJSON(m); err != nil {
 		return err

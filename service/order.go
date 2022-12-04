@@ -15,7 +15,6 @@ type (
 		GetAllOrders(pageable util.Pageable) (*util.Page, error)
 		UpdateOrderStatus(order *domain.OrderStatusPayload) *domain.Response
 		CreateOrder(order *domain.OrderPayload) *domain.Response
-		// CreateOrderDetails(orders *domain.OrderDetails) *domain.Response
 	}
 
 	orderService struct {
@@ -88,7 +87,3 @@ func (s *orderService) CreateOrder(order *domain.OrderPayload) *domain.Response 
 
 	return response
 }
-
-// func (s *orderService) CreateOrderDetails(orders *domain.OrderDetails) *domain.Response {
-// 	return s.orderRepo.CreateOrderDetails(orders)
-// }
