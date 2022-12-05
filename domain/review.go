@@ -11,7 +11,7 @@ type Review struct {
 	UserId      string    `gorm:"column:user_id" json:"user_id"`
 	MenuId      int       `gorm:"column:menu_id" json:"menu_id"`
 	Description string    `gorm:"column:description" json:"description"`
-	Rating      float32   `gorm:"column:rating" json:"rating"`
+	Rating      int       `gorm:"column:rating" json:"rating"`
 	CreatedAt   time.Time `gorm:"column:created_at" json:"created_at"`
 	User        User      `gorm:"foreignKey:UserId;references:Id" json:"user"`
 }

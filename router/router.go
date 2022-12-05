@@ -7,6 +7,7 @@ import (
 )
 
 func Routes(router *gin.Engine, app *initialize.Application) {
+	router.Static("/docs/", "dist/")
 	AuthRoutes(router, app)
 	UserRoutes(router, app)
 	MenuRoutes(router, app)

@@ -1,0 +1,1809 @@
+openapi: 3.0.0
+info:
+  title: Final Project
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+components:
+  securitySchemes:
+    noauthAuth:
+      type: http
+      scheme: noauth
+    bearerAuth:
+      type: http
+      scheme: bearer
+tags:
+  - name: Auth
+  - name: User
+  - name: Admin
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: aldo@test.com
+                password: "1234"
+      security:
+        - noauthAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                error: null
+                isSuccess: true
+                token: >-
+                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjAzNGNjOTMtM2I0MC00ZGMxLTgyMWEtZWViODA1NjAzMjFmIiwicm9sZV9pZCI6MSwiaXNzIjoiand0aXNzdWVyIiwiZXhwIjoxNjcwMjM3NTA2LCJpYXQiOjE2NzAyMzM5MDZ9.s4s8vT_Wd_FUg9_eSAn_Iyro23xLSqB-yOS-rs0Q1d8
+                user:
+                  id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                  email: aldo@test.com
+                  address: null
+                  full_name: ""
+                  phone: null
+                  profile_picture: null
+                  role: 1
+                  created_at: "0001-01-01T00:00:00Z"
+                  updated_at: "0001-01-01T00:00:00Z"
+                  favorites: []
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Email Required
+                  value:
+                    data: null
+                    error: email is required
+                    isSuccess: false
+                example-1:
+                  summary: Password Required
+                  value:
+                    data: null
+                    error: password is required
+                    isSuccess: false
+                example-2:
+                  summary: Login
+                  value:
+                    data: null
+                    error: wrong email or password
+                    isSuccess: false
+  /register:
+    post:
+      tags:
+        - Auth
+      summary: Register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                fullname: userr
+                email: userr@test.com
+                password: "1234"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: User Registered.
+                error: null
+                isSuccess: true
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Bad Request
+                  value:
+                    data: null
+                    error: email already exists
+                    isSuccess: false
+                example-1:
+                  summary: Email Required
+                  value:
+                    data: null
+                    error: email is required
+                    isSuccess: false
+                example-2:
+                  summary: Password Required
+                  value:
+                    data: null
+                    error: password is required
+                    isSuccess: false
+  /users/change-profile:
+    put:
+      tags:
+        - User
+      summary: Change Profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                address: test address
+                full_name: aldo new
+                phone: "081234567899"
+                profile_picture: ""
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                  email: aldo@test.com
+                  address: test address
+                  full_name: aldo new
+                  phone: "081234567899"
+                  profile_picture: ""
+                  role: 1
+                  created_at: "2022-12-05T15:26:21.274016Z"
+                  updated_at: "2022-12-05T16:55:31.727987Z"
+                  favorites: null
+                error: null
+                isSuccess: true
+  /users/coupons:
+    get:
+      tags:
+        - User
+      summary: Get User Coupons
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                    expired_at: "2022-12-30T00:00:00Z"
+                    qty: 1
+                    coupon:
+                      id: cc6fe9c1-a1aa-46b9-8c7c-77b662c55395
+                      code: MONDAYPAYDAY
+                      discount: 100000
+                      valid_until: "2022-12-30T00:00:00Z"
+                      created_at: "2022-12-05T15:47:39.718249Z"
+                      deleted_at: null
+                  - user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                    expired_at: "2022-12-30T00:00:00Z"
+                    qty: 1
+                    coupon:
+                      id: ""
+                      code: ""
+                      discount: 0
+                      valid_until: ""
+                      created_at: "0001-01-01T00:00:00Z"
+                      deleted_at: null
+                error: null
+                isSuccess: true
+  /users/profile:
+    get:
+      tags:
+        - User
+      summary: Get Profile
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                  email: aldo@test.com
+                  address: test address
+                  full_name: aldo new
+                  phone: "081234567899"
+                  profile_picture: ""
+                  role: 1
+                  created_at: "2022-12-05T15:26:21.274016Z"
+                  updated_at: "2022-12-05T16:55:31.727987Z"
+                  favorites: []
+                error: null
+                isSuccess: true
+  /users/favorites:
+    post:
+      tags:
+        - User
+      summary: Add To Favorites
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                menu_id: 1
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: Menu added to favorite.
+                error: null
+                isSuccess: true
+  /users/orders:
+    get:
+      tags:
+        - User
+      summary: Get User Orders
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                current_page: 1
+                data:
+                  - id: 4
+                    user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                    coupon_id: null
+                    payment_id: 1
+                    status: Preparing
+                    order_date: "2022-12-05T17:02:06.333742Z"
+                    total_price: 33000
+                    updated_at: "2022-12-05T17:02:06.333822Z"
+                    order_details:
+                      - id: 12
+                        menu_id: 8
+                        order_id: 4
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 8
+                          name: Salad
+                          price: 10000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229633/pexels-roman-odintsov-4871111_r7knbo.jpg
+                          category_id: 2
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 2
+                            name: Dessert
+                          menu_option: []
+                          reviews: []
+                      - id: 13
+                        menu_id: 12
+                        order_id: 4
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 12
+                          name: Kebab
+                          price: 23000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229826/pexels-dhiraj-jain-12737663_aqnauo.jpg
+                          category_id: 5
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 5
+                            name: Western
+                          menu_option: []
+                          reviews: []
+                    payment_detail:
+                      id: 1
+                      description: DANA
+                    subtotal: 33000
+                    coupon:
+                      id: ""
+                      code: ""
+                      discount: 0
+                      valid_until: ""
+                      created_at: "0001-01-01T00:00:00Z"
+                      deleted_at: null
+                    user:
+                      id: ""
+                      email: ""
+                      address: null
+                      full_name: ""
+                      phone: null
+                      profile: null
+                      favorites: null
+                  - id: 3
+                    user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                    coupon_id: null
+                    payment_id: 1
+                    status: Preparing
+                    order_date: "2022-12-05T17:01:52.16186Z"
+                    total_price: 62000
+                    updated_at: "2022-12-05T17:01:52.162834Z"
+                    order_details:
+                      - id: 9
+                        menu_id: 19
+                        order_id: 3
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 19
+                          name: Iced Chocolate
+                          price: 50000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670231402/ltbbx4vzwdkom2ncbrmp.svg
+                          category_id: 1
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: mantap
+                          created_at: "2022-12-05T16:09:06.145522Z"
+                          updated_at: "2022-12-05T16:09:06.145522Z"
+                          deleted_at: null
+                          category:
+                            id: 1
+                            name: Beverage
+                          menu_option:
+                            - id: 5
+                              menu_id: 19
+                              name: Double Chocolate
+                              price: 5000
+                          reviews: []
+                      - id: 10
+                        menu_id: 4
+                        order_id: 3
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 4
+                          name: Mineral Water
+                          price: 5000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229629/pexels-francesco-paggiaro-593099_gmwrjm.jpg
+                          category_id: 1
+                          rating: 0
+                          total_review: 0
+                          is_available: false
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 1
+                            name: Beverage
+                          menu_option: []
+                          reviews: []
+                      - id: 11
+                        menu_id: 3
+                        order_id: 3
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 3
+                          name: Coffee
+                          price: 7000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229622/pexels-tirachard-kumtanom-544113_irguad.jpg
+                          category_id: 1
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 1
+                            name: Beverage
+                          menu_option: []
+                          reviews: []
+                    payment_detail:
+                      id: 1
+                      description: DANA
+                    subtotal: 62000
+                    coupon:
+                      id: ""
+                      code: ""
+                      discount: 0
+                      valid_until: ""
+                      created_at: "0001-01-01T00:00:00Z"
+                      deleted_at: null
+                    user:
+                      id: ""
+                      email: ""
+                      address: null
+                      full_name: ""
+                      phone: null
+                      profile: null
+                      favorites: null
+                error: null
+                isSuccess: true
+                limit: 10
+                total: 2
+                total_page: 1
+  /users/reviews:
+    post:
+      tags:
+        - User
+      summary: Add Review
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                menu_id: 18
+                description: greatt
+                rating: 5
+      security:
+        - bearerAuth: []
+      responses:
+        undefined:
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: Menu Updated.
+                error: null
+                isSuccess: true
+  /orders:
+    post:
+      tags:
+        - User
+      summary: Create Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                payment_id: 1
+                coupon_id: ""
+                status: Preparing
+                subtotal: 10000
+                total_price: 10000
+                orders:
+                  - menu_id: 18
+                    qty: 1
+                    option_id: 2
+                  - menu_id: 16
+                    qty: 2
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 5
+                  UserId: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                  coupon_id: null
+                  payment_id: 1
+                  status: Preparing
+                  order_date: "2022-12-05T17:30:50.185785883+07:00"
+                  total_price: 10000
+                  subtotal: 10000
+                  orders:
+                    - menu_id: 18
+                      order_id: 5
+                      qty: 1
+                      option_id: 2
+                    - menu_id: 16
+                      order_id: 5
+                      qty: 2
+                      option_id: null
+                error: null
+                isSuccess: true
+  /questions:
+    get:
+      tags:
+        - User
+      summary: Get Questions
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 4
+                    question: What U.S. state is known as the Empire State?
+                    correct_answer: New York State
+                    option_one: Washington DC
+                    option_two: New York State
+                    option_three: Texas
+                    option_four: Hollywood
+                  - id: 5
+                    question: In what country will one find the Leaning Tower of Pisa?
+                    correct_answer: Italy
+                    option_one: Portugal
+                    option_two: Spain
+                    option_three: Italy
+                    option_four: England
+                  - id: 1
+                    question: What country in the world produces the most coffee?
+                    correct_answer: Brazil
+                    option_one: Brazil
+                    option_two: Argentina
+                    option_three: USA
+                    option_four: Indonesia
+                  - id: 3
+                    question: What country is sushi from?
+                    correct_answer: Japan
+                    option_one: Vietnam
+                    option_two: Thailand
+                    option_three: Korea
+                    option_four: Japan
+                  - id: 9
+                    question: On what continent is the country of Egypt?
+                    correct_answer: Africa
+                    option_one: Africa
+                    option_two: Asia
+                    option_three: South America
+                    option_four: Europe
+                error: null
+                isSuccess: true
+  /game:
+    post:
+      tags:
+        - User
+      summary: Create Game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                score: 80
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                  score: 80
+                  created_at: "2022-12-05T17:34:25.064673648+07:00"
+                error: null
+                isSuccess: true
+    get:
+      tags:
+        - User
+      summary: Get History Game
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                    score: 80
+                    created_at: "2022-12-05T17:33:36.629961Z"
+                error: null
+                isSuccess: true
+  /leaderboards:
+    get:
+      tags:
+        - User
+      summary: Get Leaderboards
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 2
+                    user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                    accumulated_score: 160
+                    user:
+                      id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                      email: aldo@test.com
+                      address: test address
+                      full_name: aldo new
+                      phone: "081234567899"
+                      profile: ""
+                      favorites: null
+                  - id: 1
+                    user_id: 2e6d79c1-7f8a-493d-83a5-2d0c0f4deca9
+                    accumulated_score: 80
+                    user:
+                      id: 2e6d79c1-7f8a-493d-83a5-2d0c0f4deca9
+                      email: userbaru@test.com
+                      address: test
+                      full_name: userbaru
+                      phone: "0821311321334"
+                      profile: >-
+                        https://res.cloudinary.com/dcdexrr4n/image/upload/v1670231142/esbyxicrokj49dxgphgb.jpg
+                      favorites: null
+                error: null
+                isSuccess: true
+  /admin/orders:
+    get:
+      tags:
+        - Admin
+      summary: Get All Orders
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                current_page: 1
+                data:
+                  - id: 4
+                    user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                    coupon_id: null
+                    payment_id: 1
+                    status: Preparing
+                    order_date: "2022-12-05T17:02:06.333742Z"
+                    total_price: 33000
+                    updated_at: "2022-12-05T17:02:06.333822Z"
+                    order_details:
+                      - id: 12
+                        menu_id: 8
+                        order_id: 4
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 8
+                          name: Salad
+                          price: 10000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229633/pexels-roman-odintsov-4871111_r7knbo.jpg
+                          category_id: 2
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 2
+                            name: Dessert
+                          menu_option: []
+                          reviews: null
+                      - id: 13
+                        menu_id: 12
+                        order_id: 4
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 12
+                          name: Kebab
+                          price: 23000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229826/pexels-dhiraj-jain-12737663_aqnauo.jpg
+                          category_id: 5
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 5
+                            name: Western
+                          menu_option: []
+                          reviews: null
+                    payment_detail:
+                      id: 1
+                      description: DANA
+                    subtotal: 33000
+                    coupon:
+                      id: ""
+                      code: ""
+                      discount: 0
+                      valid_until: ""
+                      created_at: "0001-01-01T00:00:00Z"
+                      deleted_at: null
+                    user:
+                      id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                      email: aldo@test.com
+                      address: test address
+                      full_name: aldo new
+                      phone: "081234567899"
+                      profile: ""
+                      favorites: null
+                  - id: 3
+                    user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                    coupon_id: null
+                    payment_id: 1
+                    status: Preparing
+                    order_date: "2022-12-05T17:01:52.16186Z"
+                    total_price: 62000
+                    updated_at: "2022-12-05T17:01:52.162834Z"
+                    order_details:
+                      - id: 9
+                        menu_id: 19
+                        order_id: 3
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 19
+                          name: Iced Chocolate
+                          price: 50000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670231402/ltbbx4vzwdkom2ncbrmp.svg
+                          category_id: 1
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: mantap
+                          created_at: "2022-12-05T16:09:06.145522Z"
+                          updated_at: "2022-12-05T16:09:06.145522Z"
+                          deleted_at: null
+                          category:
+                            id: 1
+                            name: Beverage
+                          menu_option:
+                            - id: 5
+                              menu_id: 19
+                              name: Double Chocolate
+                              price: 5000
+                          reviews: null
+                      - id: 10
+                        menu_id: 4
+                        order_id: 3
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 4
+                          name: Mineral Water
+                          price: 5000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229629/pexels-francesco-paggiaro-593099_gmwrjm.jpg
+                          category_id: 1
+                          rating: 0
+                          total_review: 0
+                          is_available: false
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 1
+                            name: Beverage
+                          menu_option: []
+                          reviews: null
+                      - id: 11
+                        menu_id: 3
+                        order_id: 3
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 3
+                          name: Coffee
+                          price: 7000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229622/pexels-tirachard-kumtanom-544113_irguad.jpg
+                          category_id: 1
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 1
+                            name: Beverage
+                          menu_option: []
+                          reviews: null
+                    payment_detail:
+                      id: 1
+                      description: DANA
+                    subtotal: 62000
+                    coupon:
+                      id: ""
+                      code: ""
+                      discount: 0
+                      valid_until: ""
+                      created_at: "0001-01-01T00:00:00Z"
+                      deleted_at: null
+                    user:
+                      id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                      email: aldo@test.com
+                      address: test address
+                      full_name: aldo new
+                      phone: "081234567899"
+                      profile: ""
+                      favorites: null
+                  - id: 2
+                    user_id: 2e6d79c1-7f8a-493d-83a5-2d0c0f4deca9
+                    coupon_id: f1e35304-4b89-4301-8ec4-b5d5f81a5495
+                    payment_id: 2
+                    status: On The Way
+                    order_date: "2022-12-05T16:06:39.009271Z"
+                    total_price: 4000
+                    updated_at: "2022-12-05T16:06:39.012068Z"
+                    order_details:
+                      - id: 7
+                        menu_id: 5
+                        order_id: 2
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 5
+                          name: Grilled Gyoza
+                          price: 20000
+                          photo: ""
+                          category_id: 6
+                          rating: 0
+                          total_review: 0
+                          is_available: false
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 6
+                            name: Asian
+                          menu_option: []
+                          reviews: null
+                      - id: 8
+                        menu_id: 16
+                        order_id: 2
+                        qty: 2
+                        option_id: 0
+                        menu_detail:
+                          id: 16
+                          name: Banana Split
+                          price: 17000
+                          photo: ""
+                          category_id: 2
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 2
+                            name: Dessert
+                          menu_option: []
+                          reviews: null
+                    payment_detail:
+                      id: 2
+                      description: ShopeePay
+                    subtotal: 54000
+                    coupon:
+                      id: f1e35304-4b89-4301-8ec4-b5d5f81a5495
+                      code: FRIYAY50
+                      discount: 50000
+                      valid_until: "2022-12-30T00:00:00Z"
+                      created_at: "2022-12-05T15:47:39.718249Z"
+                      deleted_at: null
+                    user:
+                      id: 2e6d79c1-7f8a-493d-83a5-2d0c0f4deca9
+                      email: userbaru@test.com
+                      address: test
+                      full_name: userbaru
+                      phone: "0821311321334"
+                      profile: >-
+                        https://res.cloudinary.com/dcdexrr4n/image/upload/v1670231142/esbyxicrokj49dxgphgb.jpg
+                      favorites: null
+                  - id: 1
+                    user_id: 2e6d79c1-7f8a-493d-83a5-2d0c0f4deca9
+                    coupon_id: null
+                    payment_id: 1
+                    status: Received
+                    order_date: "2022-12-05T16:04:50.748022Z"
+                    total_price: 106000
+                    updated_at: "2022-12-05T16:04:50.748616Z"
+                    order_details:
+                      - id: 1
+                        menu_id: 2
+                        order_id: 1
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 2
+                          name: Coke
+                          price: 8000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229619/pexels-pixabay-50593_e61f55.jpg
+                          category_id: 1
+                          rating: 4
+                          total_review: 1
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 1
+                            name: Beverage
+                          menu_option: []
+                          reviews: null
+                      - id: 2
+                        menu_id: 3
+                        order_id: 1
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 3
+                          name: Coffee
+                          price: 7000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229622/pexels-tirachard-kumtanom-544113_irguad.jpg
+                          category_id: 1
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 1
+                            name: Beverage
+                          menu_option: []
+                          reviews: null
+                      - id: 3
+                        menu_id: 1
+                        order_id: 1
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 1
+                          name: Sweet Tea
+                          price: 10000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229226/pexels-barbara-webb-792613_w5xjyr.jpg
+                          category_id: 1
+                          rating: 0
+                          total_review: 0
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 1
+                            name: Beverage
+                          menu_option: []
+                          reviews: null
+                      - id: 4
+                        menu_id: 18
+                        order_id: 1
+                        qty: 1
+                        option_id: 0
+                        menu_detail:
+                          id: 18
+                          name: Ice Cream
+                          price: 13000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229835/pexels-%E5%8A%89%E8%8A%B7%E5%AE%89-11719086_plmhgj.jpg
+                          category_id: 2
+                          rating: 5
+                          total_review: 1
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 2
+                            name: Dessert
+                          menu_option:
+                            - id: 1
+                              menu_id: 18
+                              name: Vanilla With Cone
+                              price: 0
+                            - id: 2
+                              menu_id: 18
+                              name: Vanilla With Cup
+                              price: 10000
+                            - id: 3
+                              menu_id: 18
+                              name: Chocolate With Cone
+                              price: 0
+                            - id: 4
+                              menu_id: 18
+                              name: Chocolate With Cup
+                              price: 1000
+                          reviews: null
+                      - id: 5
+                        menu_id: 18
+                        order_id: 1
+                        qty: 2
+                        option_id: 1
+                        menu_detail:
+                          id: 18
+                          name: Ice Cream
+                          price: 13000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229835/pexels-%E5%8A%89%E8%8A%B7%E5%AE%89-11719086_plmhgj.jpg
+                          category_id: 2
+                          rating: 5
+                          total_review: 1
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 2
+                            name: Dessert
+                          menu_option:
+                            - id: 1
+                              menu_id: 18
+                              name: Vanilla With Cone
+                              price: 0
+                            - id: 2
+                              menu_id: 18
+                              name: Vanilla With Cup
+                              price: 10000
+                            - id: 3
+                              menu_id: 18
+                              name: Chocolate With Cone
+                              price: 0
+                            - id: 4
+                              menu_id: 18
+                              name: Chocolate With Cup
+                              price: 1000
+                          reviews: null
+                      - id: 6
+                        menu_id: 18
+                        order_id: 1
+                        qty: 3
+                        option_id: 2
+                        menu_detail:
+                          id: 18
+                          name: Ice Cream
+                          price: 13000
+                          photo: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229835/pexels-%E5%8A%89%E8%8A%B7%E5%AE%89-11719086_plmhgj.jpg
+                          category_id: 2
+                          rating: 5
+                          total_review: 1
+                          is_available: true
+                          description: ""
+                          created_at: "2022-12-05T15:45:39.864249Z"
+                          updated_at: "2022-12-05T15:45:39.864249Z"
+                          deleted_at: null
+                          category:
+                            id: 2
+                            name: Dessert
+                          menu_option:
+                            - id: 1
+                              menu_id: 18
+                              name: Vanilla With Cone
+                              price: 0
+                            - id: 2
+                              menu_id: 18
+                              name: Vanilla With Cup
+                              price: 10000
+                            - id: 3
+                              menu_id: 18
+                              name: Chocolate With Cone
+                              price: 0
+                            - id: 4
+                              menu_id: 18
+                              name: Chocolate With Cup
+                              price: 1000
+                          reviews: null
+                    payment_detail:
+                      id: 1
+                      description: DANA
+                    subtotal: 106000
+                    coupon:
+                      id: ""
+                      code: ""
+                      discount: 0
+                      valid_until: ""
+                      created_at: "0001-01-01T00:00:00Z"
+                      deleted_at: null
+                    user:
+                      id: 2e6d79c1-7f8a-493d-83a5-2d0c0f4deca9
+                      email: userbaru@test.com
+                      address: test
+                      full_name: userbaru
+                      phone: "0821311321334"
+                      profile: >-
+                        https://res.cloudinary.com/dcdexrr4n/image/upload/v1670231142/esbyxicrokj49dxgphgb.jpg
+                      favorites: null
+                error: null
+                isSuccess: true
+                limit: 10
+                total: 4
+                total_page: 1
+  /admin/menus:
+    post:
+      tags:
+        - Admin
+      summary: Create Menu
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Fish & Chips
+                price: 50000
+                photo: null
+                category_id: 2
+                is_available: true
+                description: test
+                options:
+                  - name: With Mayonaise
+                    price: 5000
+                  - name: Double French Fries
+                    price: 10000
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 20
+                  name: Fish & Chips
+                  price: 50000
+                  photo: ""
+                  category_id: 2
+                  is_available: true
+                  description: test
+                  options:
+                    - id: 6
+                      menu_id: 20
+                      name: With Mayonaise
+                      price: 5000
+                    - id: 7
+                      menu_id: 20
+                      name: Double French Fries
+                      price: 10000
+                error: null
+                isSuccess: true
+  /admin/menus/11:
+    put:
+      tags:
+        - Admin
+      summary: Update Menu
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Fried Rice
+                price: 20000
+                photo: >-
+                  https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229822/pexels-zn_s-food_natureart-8992927_izvxme.jpg
+                category_id: 6
+                is_available: true
+                description: updated
+                options:
+                  - id: 0
+                    name: Seafood
+                    price: 10000
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 0
+                  name: Fried Rice
+                  price: 20000
+                  photo: >-
+                    https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229822/pexels-zn_s-food_natureart-8992927_izvxme.jpg
+                  category_id: 6
+                  is_available: true
+                  description: updated
+                  options:
+                    - id: 0
+                      menu_id: 11
+                      name: Seafood
+                      price: 10000
+                error: null
+                isSuccess: true
+  /admin/menus/1:
+    delete:
+      tags:
+        - Admin
+      summary: Delete Menu
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 1
+                  name: Sweet Tea
+                  price: 10000
+                  photo: >-
+                    https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229226/pexels-barbara-webb-792613_w5xjyr.jpg
+                  category_id: 1
+                  rating: 0
+                  total_review: 0
+                  is_available: true
+                  description: ""
+                  created_at: "2022-12-05T15:45:39.864249Z"
+                  updated_at: "2022-12-05T15:45:39.864249Z"
+                  deleted_at: "2022-12-05T17:25:13.85618Z"
+                  category:
+                    id: 0
+                    name: ""
+                  menu_option: null
+                  reviews: null
+                error: null
+                isSuccess: true
+  /admin/orders/4:
+    put:
+      tags:
+        - Admin
+      summary: Update Order Status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                status: On The Way
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: Order Status Updated.
+                error: null
+                isSuccess: true
+  /admin/coupons:
+    post:
+      tags:
+        - Admin
+      summary: Create Coupon
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                code: TEST06
+                discount: 30000
+                valid_until: "2022-12-30"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: Coupon Created.
+                error: null
+                isSuccess: true
+    get:
+      tags:
+        - Admin
+      summary: Get All Coupon
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 5ce23502-3798-4f52-96bc-c4cedc3445ab
+                    code: TEST04
+                    discount: 75000
+                    valid_until: "2022-12-12T00:00:00Z"
+                    created_at: "2022-12-05T16:11:03.032798Z"
+                    deleted_at: null
+                  - id: f1e35304-4b89-4301-8ec4-b5d5f81a5495
+                    code: FRIYAY50
+                    discount: 50000
+                    valid_until: "2022-12-30T00:00:00Z"
+                    created_at: "2022-12-05T15:47:39.718249Z"
+                    deleted_at: null
+                  - id: cc6fe9c1-a1aa-46b9-8c7c-77b662c55395
+                    code: MONDAYPAYDAY
+                    discount: 100000
+                    valid_until: "2022-12-30T00:00:00Z"
+                    created_at: "2022-12-05T15:47:39.718249Z"
+                    deleted_at: null
+                error: null
+                isSuccess: true
+  /admin/coupons/098c0524-9740-4abf-a97c-61199c74b1b4:
+    delete:
+      tags:
+        - Admin
+      summary: Delete Coupon
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 098c0524-9740-4abf-a97c-61199c74b1b4
+                  code: TEST06
+                  discount: 30000
+                  valid_until: "2022-12-30T00:00:00Z"
+                  created_at: "2022-12-05T17:27:29.605815Z"
+                  deleted_at: "2022-12-05T17:28:24.958875Z"
+                error: null
+                isSuccess: true
+  /admin/coupons/5ce23502-3798-4f52-96bc-c4cedc3445ab:
+    get:
+      tags:
+        - Admin
+      summary: Get Coupon
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 5ce23502-3798-4f52-96bc-c4cedc3445ab
+                  code: TEST04
+                  discount: 75000
+                  valid_until: "2022-12-12T00:00:00Z"
+                  created_at: "2022-12-05T16:11:03.032798Z"
+                  deleted_at: null
+                error: null
+                isSuccess: true
+    put:
+      tags:
+        - Admin
+      summary: Update Coupon
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                discount: 250000
+                valid_until: "2022-12-30T00:00:00Z"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 5ce23502-3798-4f52-96bc-c4cedc3445ab
+                  code: ""
+                  discount: 250000
+                  valid_until: "2022-12-30T00:00:00Z"
+                  created_at: "0001-01-01T00:00:00Z"
+                  deleted_at: null
+                error: null
+                isSuccess: true
+  /menus:
+    get:
+      tags:
+        - default
+      summary: Get All Menus
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                current_page: 1
+                data:
+                  - id: 18
+                    name: Ice Cream
+                    price: 13000
+                    photo: >-
+                      https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229835/pexels-%E5%8A%89%E8%8A%B7%E5%AE%89-11719086_plmhgj.jpg
+                    category_id: 2
+                    rating: 5
+                    total_review: 1
+                    is_available: true
+                    description: ""
+                    created_at: "2022-12-05T15:45:39.864249Z"
+                    updated_at: "2022-12-05T15:45:39.864249Z"
+                    deleted_at: null
+                    category:
+                      id: 2
+                      name: Dessert
+                    menu_option:
+                      - id: 1
+                        menu_id: 18
+                        name: Vanilla With Cone
+                        price: 0
+                      - id: 2
+                        menu_id: 18
+                        name: Vanilla With Cup
+                        price: 10000
+                      - id: 3
+                        menu_id: 18
+                        name: Chocolate With Cone
+                        price: 0
+                      - id: 4
+                        menu_id: 18
+                        name: Chocolate With Cup
+                        price: 1000
+                    reviews:
+                      - id: 2
+                        user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                        menu_id: 18
+                        description: greatt
+                        rating: 5
+                        created_at: "2022-12-05T17:08:15.249279Z"
+                        user:
+                          id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                          email: aldo@test.com
+                          address: test address
+                          full_name: aldo new
+                          phone: "081234567899"
+                          profile: ""
+                          favorites: null
+                  - id: 2
+                    name: Coke
+                    price: 8000
+                    photo: >-
+                      https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229619/pexels-pixabay-50593_e61f55.jpg
+                    category_id: 1
+                    rating: 4
+                    total_review: 1
+                    is_available: true
+                    description: ""
+                    created_at: "2022-12-05T15:45:39.864249Z"
+                    updated_at: "2022-12-05T15:45:39.864249Z"
+                    deleted_at: null
+                    category:
+                      id: 1
+                      name: Beverage
+                    menu_option: []
+                    reviews:
+                      - id: 1
+                        user_id: 2e6d79c1-7f8a-493d-83a5-2d0c0f4deca9
+                        menu_id: 2
+                        description: lumayan
+                        rating: 4
+                        created_at: "2022-12-05T16:30:25.539887Z"
+                        user:
+                          id: 2e6d79c1-7f8a-493d-83a5-2d0c0f4deca9
+                          email: userbaru@test.com
+                          address: test
+                          full_name: userbaru
+                          phone: "0821311321334"
+                          profile: >-
+                            https://res.cloudinary.com/dcdexrr4n/image/upload/v1670231142/esbyxicrokj49dxgphgb.jpg
+                          favorites: null
+                  - id: 4
+                    name: Mineral Water
+                    price: 5000
+                    photo: >-
+                      https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229629/pexels-francesco-paggiaro-593099_gmwrjm.jpg
+                    category_id: 1
+                    rating: 0
+                    total_review: 0
+                    is_available: false
+                    description: ""
+                    created_at: "2022-12-05T15:45:39.864249Z"
+                    updated_at: "2022-12-05T15:45:39.864249Z"
+                    deleted_at: null
+                    category:
+                      id: 1
+                      name: Beverage
+                    menu_option: []
+                    reviews: []
+                  - id: 5
+                    name: Grilled Gyoza
+                    price: 20000
+                    photo: ""
+                    category_id: 6
+                    rating: 0
+                    total_review: 0
+                    is_available: false
+                    description: ""
+                    created_at: "2022-12-05T15:45:39.864249Z"
+                    updated_at: "2022-12-05T15:45:39.864249Z"
+                    deleted_at: null
+                    category:
+                      id: 6
+                      name: Asian
+                    menu_option: []
+                    reviews: []
+                  - id: 6
+                    name: Siomay
+                    price: 3000
+                    photo: ""
+                    category_id: 6
+                    rating: 0
+                    total_review: 0
+                    is_available: true
+                    description: ""
+                    created_at: "2022-12-05T15:45:39.864249Z"
+                    updated_at: "2022-12-05T15:45:39.864249Z"
+                    deleted_at: null
+                    category:
+                      id: 6
+                      name: Asian
+                    menu_option: []
+                    reviews: []
+                  - id: 7
+                    name: Mendoan
+                    price: 2000
+                    photo: ""
+                    category_id: 6
+                    rating: 0
+                    total_review: 0
+                    is_available: true
+                    description: ""
+                    created_at: "2022-12-05T15:45:39.864249Z"
+                    updated_at: "2022-12-05T15:45:39.864249Z"
+                    deleted_at: null
+                    category:
+                      id: 6
+                      name: Asian
+                    menu_option: []
+                    reviews: []
+                  - id: 8
+                    name: Salad
+                    price: 10000
+                    photo: >-
+                      https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229633/pexels-roman-odintsov-4871111_r7knbo.jpg
+                    category_id: 2
+                    rating: 0
+                    total_review: 0
+                    is_available: true
+                    description: ""
+                    created_at: "2022-12-05T15:45:39.864249Z"
+                    updated_at: "2022-12-05T15:45:39.864249Z"
+                    deleted_at: null
+                    category:
+                      id: 2
+                      name: Dessert
+                    menu_option: []
+                    reviews: []
+                  - id: 9
+                    name: Bakmi
+                    price: 22000
+                    photo: ""
+                    category_id: 7
+                    rating: 0
+                    total_review: 0
+                    is_available: true
+                    description: ""
+                    created_at: "2022-12-05T15:45:39.864249Z"
+                    updated_at: "2022-12-05T15:45:39.864249Z"
+                    deleted_at: null
+                    category:
+                      id: 7
+                      name: Noodles
+                    menu_option: []
+                    reviews: []
+                  - id: 10
+                    name: Chicken Satay
+                    price: 25000
+                    photo: >-
+                      https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229635/pexels-mouktik-joshi-9646858_lieubt.jpg
+                    category_id: 4
+                    rating: 0
+                    total_review: 0
+                    is_available: true
+                    description: ""
+                    created_at: "2022-12-05T15:45:39.864249Z"
+                    updated_at: "2022-12-05T15:45:39.864249Z"
+                    deleted_at: null
+                    category:
+                      id: 4
+                      name: Chicken
+                    menu_option: []
+                    reviews: []
+                  - id: 1
+                    name: Sweet Tea
+                    price: 10000
+                    photo: >-
+                      https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229226/pexels-barbara-webb-792613_w5xjyr.jpg
+                    category_id: 1
+                    rating: 0
+                    total_review: 0
+                    is_available: true
+                    description: ""
+                    created_at: "2022-12-05T15:45:39.864249Z"
+                    updated_at: "2022-12-05T15:45:39.864249Z"
+                    deleted_at: null
+                    category:
+                      id: 1
+                      name: Beverage
+                    menu_option: []
+                    reviews: []
+                error: null
+                isSuccess: true
+                limit: 10
+                total: 19
+                total_page: 2
+  /categories:
+    get:
+      tags:
+        - default
+      summary: Get All Categories
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 1
+                    name: Beverage
+                  - id: 2
+                    name: Dessert
+                  - id: 3
+                    name: Fast Food
+                  - id: 4
+                    name: Chicken
+                  - id: 5
+                    name: Western
+                  - id: 6
+                    name: Asian
+                  - id: 7
+                    name: Noodles
+                error: null
+                isSuccess: true
+  /menus/18:
+    get:
+      tags:
+        - default
+      summary: Get Menu Detail
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 18
+                  name: Ice Cream
+                  price: 13000
+                  photo: >-
+                    https://res.cloudinary.com/dcdexrr4n/image/upload/v1670229835/pexels-%E5%8A%89%E8%8A%B7%E5%AE%89-11719086_plmhgj.jpg
+                  category_id: 2
+                  rating: 5
+                  total_review: 1
+                  is_available: true
+                  description: ""
+                  created_at: "2022-12-05T15:45:39.864249Z"
+                  updated_at: "2022-12-05T15:45:39.864249Z"
+                  deleted_at: null
+                  category:
+                    id: 2
+                    name: Dessert
+                  menu_option:
+                    - id: 1
+                      menu_id: 18
+                      name: Vanilla With Cone
+                      price: 0
+                    - id: 2
+                      menu_id: 18
+                      name: Vanilla With Cup
+                      price: 10000
+                    - id: 3
+                      menu_id: 18
+                      name: Chocolate With Cone
+                      price: 0
+                    - id: 4
+                      menu_id: 18
+                      name: Chocolate With Cup
+                      price: 1000
+                  reviews:
+                    - id: 2
+                      user_id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                      menu_id: 18
+                      description: greatt
+                      rating: 5
+                      created_at: "2022-12-05T17:08:15.249279Z"
+                      user:
+                        id: 2034cc93-3b40-4dc1-821a-eeb80560321f
+                        email: aldo@test.com
+                        address: test address
+                        full_name: aldo new
+                        phone: "081234567899"
+                        profile: ""
+                        favorites: null
+                error: null
+                isSuccess: true
+  /payments:
+    get:
+      tags:
+        - default
+      summary: Get All Payments
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 1
+                    description: DANA
+                  - id: 2
+                    description: ShopeePay
+                error: null
+                isSuccess: true
