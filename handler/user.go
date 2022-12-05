@@ -40,7 +40,7 @@ func NewUserHandler(app *initialize.Application) UserHandler {
 func (h *userHandler) UpdateUserData(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	param := new(domain.UserProfile)
@@ -56,7 +56,7 @@ func (h *userHandler) UpdateUserData(c *gin.Context) *domain.Response {
 func (h *userHandler) GetCoupons(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	return h.s.GetCoupons(user_id.(string))
@@ -65,7 +65,7 @@ func (h *userHandler) GetCoupons(c *gin.Context) *domain.Response {
 func (h *userHandler) GetProfile(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	return h.s.GetProfile(user_id.(string))
@@ -74,7 +74,7 @@ func (h *userHandler) GetProfile(c *gin.Context) *domain.Response {
 func (h *userHandler) AddOrDeleteMenuFavorite(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	param := new(domain.UserFavorite)

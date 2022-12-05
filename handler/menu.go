@@ -47,11 +47,11 @@ func (h *menuHandler) GetAllMenus(c *gin.Context) *domain.Response {
 func (h *menuHandler) CreateMenu(c *gin.Context) *domain.Response {
 	role_id, exists := c.Get(domain.ROLE_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	if role_id.(int) != 0 {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	param := new(domain.MenuPayload)
@@ -66,11 +66,11 @@ func (h *menuHandler) CreateMenu(c *gin.Context) *domain.Response {
 func (h *menuHandler) UpdateMenu(c *gin.Context) *domain.Response {
 	role_id, exists := c.Get(domain.ROLE_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	if role_id.(int) != 0 {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	param := new(domain.MenuPayload)
@@ -92,11 +92,11 @@ func (h *menuHandler) UpdateMenu(c *gin.Context) *domain.Response {
 func (h *menuHandler) DeleteMenu(c *gin.Context) *domain.Response {
 	role_id, exists := c.Get(domain.ROLE_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	if role_id.(int) != 0 {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	var menu_id int

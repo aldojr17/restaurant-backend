@@ -37,7 +37,7 @@ func NewGameHandler(app *initialize.Application) GameHandler {
 func (h *gameHandler) GetAllQuestions(c *gin.Context) *domain.Response {
 	_, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	response := h.s.GetAllQuestions()
@@ -51,7 +51,7 @@ func (h *gameHandler) GetAllQuestions(c *gin.Context) *domain.Response {
 func (h *gameHandler) CreateGame(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	param := new(domain.GamePayload)
@@ -72,7 +72,7 @@ func (h *gameHandler) CreateGame(c *gin.Context) *domain.Response {
 func (h *gameHandler) GetLeaderboards(c *gin.Context) *domain.Response {
 	_, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	response := h.s.GetLeaderboards()
@@ -86,7 +86,7 @@ func (h *gameHandler) GetLeaderboards(c *gin.Context) *domain.Response {
 func (h *gameHandler) GetHistoryGame(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	response := h.s.GetHistoryGame(user_id.(string))

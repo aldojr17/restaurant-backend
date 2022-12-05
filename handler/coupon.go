@@ -37,11 +37,11 @@ func NewCouponHandler(app *initialize.Application) CouponHandler {
 func (h *couponHandler) CreateCoupon(c *gin.Context) *domain.Response {
 	role_id, exists := c.Get(domain.ROLE_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	if role_id.(int) != 0 {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	param := new(domain.Coupon)
@@ -56,11 +56,11 @@ func (h *couponHandler) CreateCoupon(c *gin.Context) *domain.Response {
 func (h *couponHandler) DeleteCoupon(c *gin.Context) *domain.Response {
 	role_id, exists := c.Get(domain.ROLE_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	if role_id.(int) != 0 {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	id := c.Param("id")
@@ -71,11 +71,11 @@ func (h *couponHandler) DeleteCoupon(c *gin.Context) *domain.Response {
 func (h *couponHandler) GetAllCoupon(c *gin.Context) *domain.Response {
 	role_id, exists := c.Get(domain.ROLE_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	if role_id.(int) != 0 {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	return h.s.GetAllCoupon()
@@ -84,11 +84,11 @@ func (h *couponHandler) GetAllCoupon(c *gin.Context) *domain.Response {
 func (h *couponHandler) GetCoupon(c *gin.Context) *domain.Response {
 	role_id, exists := c.Get(domain.ROLE_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	if role_id.(int) != 0 {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	id := c.Param("id")
@@ -99,11 +99,11 @@ func (h *couponHandler) GetCoupon(c *gin.Context) *domain.Response {
 func (h *couponHandler) UpdateCoupon(c *gin.Context) *domain.Response {
 	role_id, exists := c.Get(domain.ROLE_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	if role_id.(int) != 0 {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	id := c.Param("id")

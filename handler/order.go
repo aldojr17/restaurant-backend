@@ -39,7 +39,7 @@ func NewOrderHandler(app *initialize.Application) OrderHandler {
 func (h *orderHandler) GetAllUserOrders(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	data, err := h.s.GetAllUserOrders(newOrderPageableRequest(c.Request), user_id.(string))
@@ -53,11 +53,11 @@ func (h *orderHandler) GetAllUserOrders(c *gin.Context) *domain.Response {
 func (h *orderHandler) GetAllOrders(c *gin.Context) *domain.Response {
 	role_id, exists := c.Get(domain.ROLE_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	if role_id.(int) != 0 {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	data, err := h.s.GetAllOrders(newOrderPageableRequest(c.Request))
@@ -71,11 +71,11 @@ func (h *orderHandler) GetAllOrders(c *gin.Context) *domain.Response {
 func (h *orderHandler) UpdateOrderStatus(c *gin.Context) *domain.Response {
 	role_id, exists := c.Get(domain.ROLE_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	if role_id.(int) != 0 {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	param := new(domain.OrderStatusPayload)
@@ -96,7 +96,7 @@ func (h *orderHandler) UpdateOrderStatus(c *gin.Context) *domain.Response {
 func (h *orderHandler) CreateOrder(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	param := new(domain.OrderPayload)

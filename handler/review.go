@@ -34,7 +34,7 @@ func NewReviewHandler(app *initialize.Application) ReviewHandler {
 func (h *reviewHandler) AddReview(c *gin.Context) *domain.Response {
 	user_id, exists := c.Get(domain.USER_ID)
 	if !exists {
-		return util.SetResponse(nil, http.StatusBadRequest, util.ErrUnauthorized)
+		return util.SetResponse(nil, http.StatusUnauthorized, util.ErrUnauthorized)
 	}
 
 	param := new(domain.Review)
