@@ -13,6 +13,38 @@ type CouponRepository struct {
 	mock.Mock
 }
 
+// AddCouponToUser provides a mock function with given fields: coupon
+func (_m *CouponRepository) AddCouponToUser(coupon *domain.UserCoupon) *domain.Response {
+	ret := _m.Called(coupon)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(*domain.UserCoupon) *domain.Response); ok {
+		r0 = rf(coupon)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
+// CheckUserCoupon provides a mock function with given fields: user_id, coupon_id
+func (_m *CouponRepository) CheckUserCoupon(user_id string, coupon_id string) *domain.Response {
+	ret := _m.Called(user_id, coupon_id)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(string, string) *domain.Response); ok {
+		r0 = rf(user_id, coupon_id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
 // CreateCoupon provides a mock function with given fields: coupon
 func (_m *CouponRepository) CreateCoupon(coupon *domain.Coupon) *domain.Response {
 	ret := _m.Called(coupon)
@@ -93,6 +125,22 @@ func (_m *CouponRepository) GetCouponOwnedByUser(user_id string) *domain.Respons
 	return r0
 }
 
+// GetRandomCoupon provides a mock function with given fields:
+func (_m *CouponRepository) GetRandomCoupon() *domain.Coupon {
+	ret := _m.Called()
+
+	var r0 *domain.Coupon
+	if rf, ok := ret.Get(0).(func() *domain.Coupon); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Coupon)
+		}
+	}
+
+	return r0
+}
+
 // GetValidCoupon provides a mock function with given fields: user_id, coupon_id
 func (_m *CouponRepository) GetValidCoupon(user_id string, coupon_id string) *domain.Response {
 	ret := _m.Called(user_id, coupon_id)
@@ -130,6 +178,22 @@ func (_m *CouponRepository) UpdateCoupon(coupon *domain.Coupon) *domain.Response
 	var r0 *domain.Response
 	if rf, ok := ret.Get(0).(func(*domain.Coupon) *domain.Response); ok {
 		r0 = rf(coupon)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.Response)
+		}
+	}
+
+	return r0
+}
+
+// UpdateCouponUser provides a mock function with given fields: user_id, coupon_id
+func (_m *CouponRepository) UpdateCouponUser(user_id string, coupon_id string) *domain.Response {
+	ret := _m.Called(user_id, coupon_id)
+
+	var r0 *domain.Response
+	if rf, ok := ret.Get(0).(func(string, string) *domain.Response); ok {
+		r0 = rf(user_id, coupon_id)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*domain.Response)
