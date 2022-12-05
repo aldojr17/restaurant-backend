@@ -1,6 +1,10 @@
 package domain
 
-import "github.com/gin-gonic/gin"
+import (
+	"time"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Question struct {
 	Id            int    `gorm:"primaryKey;column:id" json:"id"`
@@ -13,9 +17,21 @@ type Question struct {
 }
 
 type GamePayload struct {
-	UserId string `gorm:"column:user_id" json:"user_id"`
-	Score  int    `gorm:"column:score" json:"score"`
+	UserId    string    `gorm:"column:user_id" json:"user_id"`
+	Score     int       `gorm:"column:score" json:"score"`
+	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
 }
+
+type Leaderboard struct {
+	Id               int    `gorm:"primaryKey;column:id" json:"id"`
+	UserId           string `gorm:"column:user_id" json:"user_id"`
+	AccumulatedScore int    `gorm:"column:accumulated_score" json:"accumulated_score"`
+	User             User   `gorm:"foreignKey:UserId;references:Id" json:"user"`
+}
+
+type Games []GamePayload
+
+type Leaderboards []Leaderboard
 
 type Questions []Question
 

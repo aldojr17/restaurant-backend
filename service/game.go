@@ -12,6 +12,8 @@ type (
 	GameService interface {
 		GetAllQuestions() *domain.Response
 		CreateGame(game *domain.GamePayload) *domain.Response
+		GetLeaderboards() *domain.Response
+		GetHistoryGame(user_id string) *domain.Response
 	}
 
 	gameService struct {
@@ -33,6 +35,14 @@ func (s *gameService) GetAllQuestions() *domain.Response {
 	return s.repo.GetAllQuestions()
 }
 
+func (s *gameService) GetLeaderboards() *domain.Response {
+	return s.repo.GetLeaderboards()
+}
+
+func (s *gameService) GetHistoryGame(user_id string) *domain.Response {
+	return s.repo.GetHistoryGame(user_id)
+}
+
 func (s *gameService) CreateGame(game *domain.GamePayload) *domain.Response {
 	coupon := s.couponRepo.GetRandomCoupon()
 
@@ -48,7 +58,12 @@ func (s *gameService) CreateGame(game *domain.GamePayload) *domain.Response {
 				Qty:       1,
 			})
 		}
+	}
 
+	if data := s.repo.GetLeaderboard(game.UserId); data != nil {
+		s.repo.UpdateLeaderboard(data.Id, game)
+	} else {
+		s.repo.AddLeaderboard(game)
 	}
 
 	return s.repo.CreateGame(game)
