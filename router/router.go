@@ -14,4 +14,5 @@ func Routes(router *gin.Engine, app *initialize.Application) {
 	OrderRoutes(router, app)
 	CategoryRoutes(router, app)
 	PaymentRoutes(router, app)
+	GameRoutes(router, app)
 }
