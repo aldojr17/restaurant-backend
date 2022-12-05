@@ -1,5 +1,7 @@
 package domain
 
+import "github.com/gin-gonic/gin"
+
 type Question struct {
 	Id            int    `gorm:"primaryKey;column:id" json:"id"`
 	Question      string `gorm:"column:question" json:"question"`
@@ -10,4 +12,17 @@ type Question struct {
 	OptionFour    string `gorm:"column:option_four" json:"option_four"`
 }
 
+type GamePayload struct {
+	UserId string `gorm:"column:user_id" json:"user_id"`
+	Score  int    `gorm:"column:score" json:"score"`
+}
+
 type Questions []Question
+
+func (game *GamePayload) Validate(c *gin.Context) error {
+	if err := c.ShouldBindJSON(game); err != nil {
+		return err
+	}
+
+	return nil
+}

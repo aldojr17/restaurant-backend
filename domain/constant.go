@@ -43,6 +43,7 @@ const (
 	ResponseOrderDetailsCreated = "Order Details Created."
 	ResponseOrderStatusUpdated  = "Order Status Updated."
 	ResponseCouponCreated       = "Coupon Created."
+	ResponseCouponAdded         = "Coupon added to user."
 
 	DELIVERY_STATUS_PREPARING  = "Preparing"
 	DELIVERY_STATUS_ON_THE_WAY = "On The Way"

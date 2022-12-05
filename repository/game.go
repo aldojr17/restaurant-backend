@@ -11,6 +11,7 @@ import (
 type (
 	GameRepository interface {
 		GetAllQuestions() *domain.Response
+		CreateGame(game *domain.GamePayload) *domain.Response
 	}
 
 	gameRepository struct {
@@ -32,4 +33,12 @@ func (repo *gameRepository) GetAllQuestions() *domain.Response {
 	}
 
 	return util.SetResponse(questions, 0, nil)
+}
+
+func (repo *gameRepository) CreateGame(game *domain.GamePayload) *domain.Response {
+	if err := repo.db.Table("games").Create(&game).Error; err != nil {
+		return util.SetResponse(nil, http.StatusInternalServerError, err)
+	}
+
+	return util.SetResponse(game, 0, nil)
 }
