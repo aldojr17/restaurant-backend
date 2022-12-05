@@ -27,14 +27,16 @@ func TestUpdateUserData(t *testing.T) {
 	payload.Address = address
 	payload.FullName = fullname
 	payload.Phone = phone
+	payload.ProfilePicture = ""
 
 	user := new(domain.UserResponse)
 	user.Id = userId
 
 	data := map[string]interface{}{
-		"full_name": fullname,
-		"phone":     phone,
-		"address":   address,
+		"full_name":       fullname,
+		"phone":           phone,
+		"address":         address,
+		"profile_picture": "",
 	}
 
 	userRepo.On("UpdateUserData", userId, data).Return(util.SetResponse(user, 0, nil))
