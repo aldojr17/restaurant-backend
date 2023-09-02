@@ -1,62 +1,84 @@
-# Final Project
+# Project Setup Instructions:
 
-## Theme: Restaurant
+To setup the project, follow these steps:
 
-## How to Setup:
+1. To set up the database, execute the provided SQL file (`assets/db.sql`). This will create the necessary tables and populate them with dummy data.
+2. Configure your environment settings in the `application.yml` file.
+3. Access the documentation through `localhost:8080/docs`.
+4. Run `go mod init` to install the project dependencies.
 
-1. To setup database, please run the given SQL file (you can find it in the `assets/final-project.sql`) in the SQL client software application (e.g Dbeaver) to set up tables and dummy data.
-2. You can setup your environment settings in the `application.yml`.
-3. Documentation may be accessed through `localhost:8080/docs`.
-4. [Optional] If you want, you can import postman collection (you can find it in the `assets/final-project.postman_collection.json`)
-5. Run `go mod init` to install dependencies
+Note: The default password for the user in the dummy data is 1234.
 
-Note: Default password for user in dummy data is 1234
+# Running Instructions:
 
-## How to Run:
+To run the project, follow these steps:
 
-1. Make sure you have installed Go.
-2. Run `make run` or `go run main.go` in your terminal.
-3. Try to access `localhost:8080/docs` in your browser to check if it is already running.
+1. Ensure that Go is installed on your system.
+2. In your terminal, run the command `make run` or `go run main.go`.
+3. Open your browser and go to `localhost:8080/docs` to check if the project is running.
 
-## ERD
+If you see the documentation on your browser, then the project is running successfully.
 
-![ERD](assets/final-project-erd.png)
+# Entity-Relationship Diagram (ERD)
 
-## Pagination
+![ERD](assets/erd.png)
 
-For pagination, there is some filters that you can use:
+# Pagination
+
+You can filter the results of a pagination request by using the following parameters:
 
 1. Sort By
 
-```
-For menu, you can sort by date, price, name, and rating (default by rating)
-e.g /menus?sortBy=date
+Menus: You can sort the results by date, price, name, or rating. The default sort order is by rating.
 
-For order, you can sort by order_date and total_price (default by order_date)
-e.g /users/orders?sortBy=order_date
+For example, to sort the menus by date, you would use the following URL:
+
+```
+/menus?sortBy=date
+```
+
+Orders: You can sort the results by order_date or total_price. The default sort order is by order_date.
+
+For example, to sort the orders by order date, you would use the following URL:
+
+```
+/users/orders?sortBy=order_date
 ```
 
 2. Sort
 
+To sort the list, use the `sort` query parameter. The default sorting order is `desc`, but you can use `asc` to sort in ascending order.
+
+For example, to sort the menus list in ascending order by name, you would use the following URL:
+
 ```
-You can sort list of menu and order descending or ascending (default descending)
-e.g /menus?sort=asc
+/menus?sort=asc
 ```
 
 3. Search
 
+To search the list, use the `name` query parameter.
+
+For example, to search for all menus with the name **"Iced"**, you would use the following URL:
+
 ```
-You can search menu and order by menu name
-e.g /menus?name=Iced
+/menus?name=Iced
 ```
 
 4. Limit and Page
 
+To limit the number of results, use the `limit` and `page` query parameters. The default limit is 10, and the default page is 1.
+
+For example, to get the first 5 menus on page 2, you would use the following URL:
+
 ```
-You can set limit for pagination and page to jump into desired page (default limit 10)
-e.g /menus?limit=5&page=2
+/menus?limit=5&page=2
 ```
 
-Note: you can combined all the filters together
+Note: You can combine all of these filters together.
 
-More details in postman collection
+For example, to get all menus with the name **"Iced"** that are on page 2, you would use the following URL:
+
+```
+/menus?name=Iced&limit=5&page=2
+```

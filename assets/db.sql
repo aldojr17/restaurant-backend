@@ -1,4 +1,4 @@
-create database restaurant_rivaldo;
+create database restaurant;
 
 CREATE TABLE "users" (
   "id" uuid PRIMARY KEY NOT NULL,
